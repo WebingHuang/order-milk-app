@@ -3,8 +3,8 @@
 const install = (Vue, vm) => {
 	Vue.prototype.$u.http.setConfig({
 		
-		   baseUrl: 'http://8.134.110.178:10882', //家里地址
-		// baseUrl: 'http://localhost:10881', //家里地址
+		   // baseUrl: 'http://8.134.110.178:10882', //家里地址
+		baseUrl: 'http://localhost:10881', //家里地址
 		// baseUrl: 'http://192.168.31.235:10881', //家里地址
 		// baseUrl: 'http://localhost:8080', //家里地址
 		  // "baseUrl": 'https://siyuanwanluo.cn/', //家里地址

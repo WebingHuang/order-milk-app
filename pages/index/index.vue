@@ -4,7 +4,7 @@
 		<phone-modal v-model="showPhone" :list="list" v-if="showPhone"></phone-modal>
 		<template>
 			<view>
-				<u-navbar :is-back="false" title="中氢商城" :background="background" :border-bottom="false"
+				<u-navbar :is-back="false" title="浪泉订牛奶" :background="background" :border-bottom="false"
 					title-color="#FFFFFF"></u-navbar>
 			</view>
 		</template>
