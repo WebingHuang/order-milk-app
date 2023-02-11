@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "提现",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-select": "/uview-ui/components/u-select/u-select"
+  }
+}

@@ -1,0 +1,113 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+#change {
+  background-color: #F0F0F0;
+}
+#change .item {
+  padding: 0 32rpx;
+  padding-bottom: 20rpx;
+  background-color: #FFFFFF;
+  padding-top: 20rpx;
+  width: 750rpx;
+  height: 140rpx;
+}
+#change .item .square {
+  width: 100rpx;
+  height: 100rpx;
+  background-color: #3e8bf3;
+  border-radius: 12rpx;
+  display: inline-block;
+  align-items: center;
+}
+#change .item .top {
+  font-size: 28rpx;
+  display: inline-block;
+  text-align: left;
+  width: 480rpx;
+  color: #1A1A1A;
+  position: absolute;
+  right: 118rpx;
+}
+#change .item .top > .lfte {
+  font-size: 24rpx;
+  color: #808080;
+}
+#change .item .top > .biao {
+  color: #1A1A1A;
+  font-weight: bold;
+}
+#change .cards .card {
+  margin: 5rpx;
+  width: 100%;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #1A1A1A;
+}
+#change .upload-text {
+  display: flex;
+  margin-top: 22rpx;
+}
+#change .upload-text .left {
+  margin-top: 11rpx;
+  color: #1A1A1A;
+  background-color: #FFFFFF;
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-left: 31rpx;
+}
+#change .upload-text .left:after {
+  color: #808080;
+  background-color: #FFFFFF;
+  font-weight: normal;
+}
+#change .upload {
+  padding-bottom: 20rpx;
+  background-color: #FFFFFF;
+}
+#change .upload .upload-button .slot-btn {
+  background: url(http://120.78.163.4:8082/feedback/upload.png) no-repeat;
+  background-size: cover;
+  width: 140rpx;
+  height: 140rpx;
+  margin-left: 32rpx;
+  margin-top: 17rpx;
+  display: flex;
+  flex-direction: column;
+}
+#change .upload .upload-button .slot-btn .top {
+  margin-top: 66rpx;
+  margin-left: 31rpx;
+  font-size: 20rpx;
+}
+#change .upload .upload-button .slot-btn .bottom {
+  margin-left: 28rpx;
+  margin-bottom: 21rpx;
+  font-size: 20rpx;
+}
+#change .botomBtn {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 27px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#change .botomBtn .adres {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 400rpx;
+  height: 68rpx;
+  background-color: #FF6633;
+  color: #FFFFFF;
+  font-weight: bold;
+  border-radius: 100rpx;
+  letter-spacing: 1px;
+  font-size: 32rpx;
+}
+

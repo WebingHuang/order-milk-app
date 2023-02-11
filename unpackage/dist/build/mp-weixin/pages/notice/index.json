@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "公告",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-loadmore": "/uview-ui/components/u-loadmore/u-loadmore"
+  }
+}

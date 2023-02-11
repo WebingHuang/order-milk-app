@@ -1,0 +1,53 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+#balance {
+  background-color: #F0F0F0;
+}
+#balance .list .item {
+  width: 100%;
+  height: 112rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 32rpx;
+  border-bottom: solid #F0F0F0 1px;
+  background-color: #FFFFFF;
+}
+#balance .list .item .lfte {
+  display: flex;
+  flex-direction: column;
+}
+#balance .list .item .lfte .title {
+  font-weight: bold;
+  font-size: 28rpx;
+  color: #1A1A1A;
+}
+#balance .list .item .lfte .text {
+  font-size: 24rpx;
+  color: #4D4D4D;
+}
+#balance .list .item .right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#balance .list .item .right .money {
+  font-weight: bold;
+  color: #3e8bf3;
+  font-size: 32rpx;
+}
+#balance .list .item .right .delmoney {
+  color: #1A1A1A;
+  font-weight: bold;
+  font-size: 32rpx;
+}
+#balance .list .item .right .text {
+  font-size: 24rpx;
+  color: #4D4D4D;
+}
+

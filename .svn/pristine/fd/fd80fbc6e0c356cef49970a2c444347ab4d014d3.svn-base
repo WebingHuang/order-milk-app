@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "公司介绍",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-parse": "/uview-ui/components/u-parse/u-parse"
+  }
+}

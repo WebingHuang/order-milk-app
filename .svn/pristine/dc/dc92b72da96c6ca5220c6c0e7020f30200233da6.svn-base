@@ -1,0 +1,143 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+#presentedcard .card.data-v-2a03cb00 {
+  background: url(http://120.78.163.4:8082/my/card.png) no-repeat;
+  background-size: contain;
+  width: 668rpx;
+  height: 167rpx;
+  margin: 0 auto;
+  display: flex;
+}
+#presentedcard .card .left-card.data-v-2a03cb00 {
+  width: 200rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+#presentedcard .card .left-card .first-row.data-v-2a03cb00 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#presentedcard .card .left-card .first-row > text.data-v-2a03cb00:first-child {
+  font-size: 40rpx;
+  height: 82rpx;
+  padding-bottom: 6rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+#presentedcard .card .left-card .first-row > text.data-v-2a03cb00:nth-child(2) {
+  font-size: 63rpx;
+}
+#presentedcard .card .left-card.data-v-2a03cb00:nth-child(1) {
+  color: #FFFFFF;
+}
+#presentedcard .card .right-card.data-v-2a03cb00 {
+  width: 468rpx;
+  box-shadow: 1rpx 2rpx 2rpx #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  border-top-right-radius: 12rpx;
+  border-bottom-right-radius: 12rpx;
+}
+#presentedcard .card .right-card .first-row.data-v-2a03cb00 {
+  padding-left: 38rpx;
+  margin-top: 15.5rpx;
+  color: #1A1A1A;
+}
+#presentedcard .card .right-card > text.data-v-2a03cb00:nth-child(2) {
+  padding-left: 38rpx;
+  color: #1A1A1A;
+  font-size: 24rpx;
+  margin-top: 17rpx;
+}
+#presentedcard .card .right-card > text.data-v-2a03cb00:nth-child(3) {
+  padding-left: 38rpx;
+  color: #1A1A1A;
+  font-size: 24rpx;
+  margin-top: 22rpx;
+}
+#presentedcard .presented-friend.data-v-2a03cb00 {
+  font-size: 32rpx;
+  font-weight: 550;
+  margin-top: 47rpx;
+  margin-left: 55rpx;
+}
+#presentedcard .phone.data-v-2a03cb00 {
+  width: 670rpx;
+  height: 100rpx;
+  margin-top: 20rpx;
+  margin-left: 40rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  display: flex;
+  align-items: center;
+}
+#presentedcard .phone > input.data-v-2a03cb00 {
+  line-height: 27rpx;
+  margin-left: 16rpx;
+  width: 100%;
+}
+#presentedcard .commit.data-v-2a03cb00 {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#presentedcard .commit .commit-btn.data-v-2a03cb00 {
+  border-radius: 34rpx;
+  width: 400rpx;
+  height: 68rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(#FF9933, #FF6633);
+  color: #ffffff;
+  font-size: 32rpx;
+}
+#presentedcard .user-info.data-v-2a03cb00 {
+  margin-top: 21rpx;
+  margin-left: 40rpx;
+  width: 670rpx;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+#presentedcard .user-info .circle.data-v-2a03cb00 {
+  border-radius: 100%;
+  background-color: #3e8bf3;
+  width: 60rpx;
+  height: 60rpx;
+}
+#presentedcard .user-info > text.data-v-2a03cb00:nth-child(2) {
+  margin-left: 30rpx;
+  font-size: 28rpx;
+  color: #4D4D4D;
+}
+#presentedcard .user-info .select-user.data-v-2a03cb00 {
+  right: 0rpx;
+  position: absolute;
+  width: 12rpx;
+  height: 24rpx;
+  background: url(http://120.78.163.4:8082/my/right-arrow.png) no-repeat;
+  background-size: contain;
+  background-size: 100% 100%;
+}
+#presentedcard .tip-message.data-v-2a03cb00 {
+  margin-top: 72rpx;
+  color: #808080;
+  font-size: 28rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+

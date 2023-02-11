@@ -1,0 +1,345 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+#commodityinfo .swiper {
+  width: 100%;
+}
+#commodityinfo .attribute .top {
+  padding: 0;
+  padding-top: 24rpx;
+  padding-left: 22rpx;
+  padding-right: 27rpx;
+  height: 218rpx;
+}
+#commodityinfo .attribute .top .money {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#commodityinfo .attribute .top .money .lfte {
+  display: flex;
+  align-items: center;
+}
+#commodityinfo .attribute .top .money .lfte .discount {
+  display: flex;
+  align-items: center;
+  margin-left: 16rpx;
+}
+#commodityinfo .attribute .top .money .lfte .discount .member {
+  color: #FFFFFF;
+  font-size: 16rpx;
+  border-radius: 4rpx;
+  width: 60rpx;
+  height: 24rpx;
+  background: linear-gradient(#3e8bf3, #4193ff);
+  /* 标准语法 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#commodityinfo .attribute .top .money .lfte .discount .member_price {
+  color: #3e8bf3;
+  font-size: 22rpx;
+  font-weight: bold;
+  margin-left: 4rpx;
+}
+#commodityinfo .attribute .top .money .lfte .price {
+  font-size: 40rpx;
+  color: #3e8bf3;
+}
+#commodityinfo .attribute .top .money .lfte .oldprice {
+  font-size: 24rpx;
+  color: #808080;
+  margin-left: 40rpx;
+  text-decoration: line-through;
+}
+#commodityinfo .attribute .top .money .right {
+  display: flex;
+  flex-direction: column;
+}
+#commodityinfo .attribute .top .money .right image {
+  width: 34rpx;
+  height: 36rpx;
+}
+#commodityinfo .attribute .top .money .right text {
+  font-size: 20rpx;
+  color: #808080;
+}
+#commodityinfo .attribute .top .money .right button {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  justify-content: space-between;
+  align-items: center;
+}
+#commodityinfo .attribute .top .name {
+  padding-top: 20rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+#commodityinfo .attribute .main .u-cell {
+  padding: 26rpx 20rpx;
+}
+#commodityinfo .attribute .html .details {
+  width: 100%;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+}
+#commodityinfo .attribute .html .details text {
+  color: #4D4D4D;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+#commodityinfo .html {
+  padding: 0 20rpx;
+  padding-bottom: 120rpx;
+}
+#commodityinfo .footer {
+  position: fixed;
+  z-index: 99;
+  left: 0;
+  bottom: 0;
+  background: #fff;
+  width: 100%;
+  padding: 0 20rpx;
+  border-top: 1px #cecece solid;
+  padding-top: 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#commodityinfo .footer .lfte {
+  display: flex;
+  align-items: center;
+}
+#commodityinfo .footer .lfte .item {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-right: 30rpx;
+}
+#commodityinfo .footer .lfte .item image {
+  width: 40rpx;
+  height: 40rpx;
+}
+#commodityinfo .footer .lfte .item text {
+  font-size: 24rpx;
+  color: #808080;
+}
+#commodityinfo .footer .lfte .item button {
+  border: none;
+  width: 40rpx;
+  height: 40rpx;
+  margin: 0;
+  display: flex;
+  padding: 0;
+}
+#commodityinfo .footer .lfte .item button image {
+  width: 40rpx;
+  height: 40rpx;
+}
+#commodityinfo .footer .lfte .item .collect {
+  color: #E60012;
+}
+#commodityinfo .footer .right {
+  display: flex;
+  align-items: center;
+  padding-bottom: 10rpx;
+}
+#commodityinfo .footer .right button {
+  height: 80rpx;
+  width: 216rpx;
+  border-radius: 48rpx;
+  color: #FFFFFF;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+#commodityinfo .footer .right button:nth-child(1) {
+  background: #3e8bf3;
+}
+#commodityinfo .footer .right button:nth-child(2) {
+  background: #FF0606;
+  margin-left: 20rpx;
+}
+#commodityinfo .items {
+  border: 1px solid #E6E5E5;
+  display: flex;
+  align-items: center;
+}
+#commodityinfo .items .square {
+  display: inline-block;
+  margin-top: 10rpx;
+  margin-left: 10rpx;
+}
+#commodityinfo .items .square image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 8rpx;
+}
+#commodityinfo .items .tan {
+  font-size: 28rpx;
+  text-align: left;
+  width: 480rpx;
+  color: #1A1A1A;
+  position: absolute;
+  right: 118rpx;
+  height: 120rpx;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+#commodityinfo .items .tan > .biao {
+  color: #1A1A1A;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+#commodityinfo .items .tan > .monor {
+  font-size: 32rpx;
+  color: #3e8bf3;
+  font-weight: bold;
+  display: flex;
+}
+#commodityinfo .items .tan > .monor > .vip {
+  display: flex;
+  align-items: center;
+  margin-left: 8rpx;
+}
+#commodityinfo .items .tan > .monor > .vip > .vip_Price {
+  font-weight: initial;
+  height: 24rpx;
+  width: 60rpx;
+  font-size: 16rpx;
+  background: linear-gradient(#3e8bf3, #4193ff);
+  /* 标准语法 */
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8rpx;
+}
+#commodityinfo .items .tan > .monor > .vip > .vipPrice {
+  font-size: 22rpx;
+  margin-left: 6rpx;
+}
+#commodityinfo .itemone {
+  width: 750rpx;
+  border: 1px solid #E6E5E5;
+}
+#commodityinfo .itemone .skuName {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-bottom: 24rpx;
+}
+#commodityinfo .itemone .skuName .suitone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F0F0F0;
+  font-size: 28rpx;
+  padding: 8rpx;
+  border-radius: 4rpx;
+  margin-left: 32rpx;
+  margin-top: 25rpx;
+  font-weight: bold;
+}
+#commodityinfo .itemone .skuName .checked {
+  background-color: #FFF0E5;
+}
+#commodityinfo .itemone .tou {
+  font-weight: bold;
+  color: #1A1A1A;
+  font-size: 32rpx;
+  margin-left: 31rpx;
+  margin-top: 31rpx;
+}
+#commodityinfo .itemone .suit {
+  background-color: #F0F0F0;
+  width: 190rpx;
+  height: 48rpx;
+  color: #1A1A1A;
+  font-weight: bold;
+  margin-left: 260rpx;
+  margin-top: -48rpx;
+}
+#commodityinfo .itemones {
+  width: 750rpx;
+  height: 189rpx;
+  border: 1px solid #E6E5E5;
+}
+#commodityinfo .itemones .capacity {
+  display: flex;
+}
+#commodityinfo .itemones .tous {
+  font-weight: bold;
+  color: #1A1A1A;
+  font-size: 32rpx;
+  margin-left: 31rpx;
+  margin-top: 31rpx;
+}
+#commodityinfo .itemones .suitones {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFF0E5;
+  font-size: 28rpx;
+  width: 190rpx;
+  height: 48rpx;
+  border-radius: 4rpx;
+  margin-left: 32rpx;
+  margin-top: 25rpx;
+  font-weight: bold;
+}
+#commodityinfo .itemones .suits {
+  background-color: #F0F0F0;
+  width: 190rpx;
+  height: 48rpx;
+  color: #1A1A1A;
+  font-weight: bold;
+  margin-left: 260rpx;
+  margin-top: -48rpx;
+}
+#commodityinfo .number {
+  margin: 0 15px;
+  height: 100rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #1A1A1A;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+#commodityinfo .number .rights {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#commodityinfo .number .stock {
+  font-size: 24rpx;
+  color: #808080;
+  width: 135rpx;
+}
+#commodityinfo .botom {
+  width: 100%;
+  height: 88rpx;
+  background-color: #FF7133;
+  position: absolute;
+  left: 0rpx;
+  bottom: 0rpx;
+}
+#commodityinfo .botom .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 32rpx;
+  color: #FFFFFF;
+  font-weight: bold;
+}
+

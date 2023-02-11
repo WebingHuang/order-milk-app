@@ -1,0 +1,766 @@
+<template>
+	<view id="topaid" :style="{height:Height}" style="overflow-y:auto">
+		<!-- <template>
+			<view>
+				<u-navbar  height="44"   title="待付款" :background="none"  :border-bottom="false" title-color="#FFFFFF" ></u-navbar>
+			</view>
+		</template> -->
+		<view class="list" overflow-y="auto">
+
+			<view class="item" v-for="(item,index) in list" :key="index">
+				<!-- 头部 -->
+				<view class="top">
+					<view class="lfte">
+						<text class="defalt">默认</text> 
+						<!-- {{item.receiverProvince}} {{item.receiverCity}} -->
+						{{item.schoolName}}{{item.className}}
+					</view>
+
+				</view>
+				<!-- 中间 -->
+				<view class="text">
+					<view class="lfte">
+						<!-- {{item.receiverRegion}} {{item.receiverDetailAddress}} -->
+						{{item.studentName}}
+					</view>
+					<view class="right">
+						<image src="http://120.78.163.4:8082/index/dj.png" mode=""></image>
+					</view>
+				</view>
+				<!-- 底部 -->
+				<view class="lower">
+					<view class="lfte">
+						<!-- <text>{{item.receiverName}} {{item.receiverPhone}}</text> -->
+						<text> {{item.parentsMobile}}</text>
+					</view>
+				</view>
+			</view>
+			<!-- 中间部分 -->
+
+			<view class="wrap" v-for="val in list" :key="val.batchId">
+				<view class="top1" v-for="item in val.omsOrderItemEntityList" :key="item.id">
+					<view class="lfte1">
+						<image :src="item.skuPic" mode=""></image>
+					</view>
+					<view class="right1">
+						<view class="title1">
+							{{item.spuName}}
+						</view>
+
+						<view class="text1">
+							<text class="specs1">
+								{{item.skuName}}
+							</text>
+							<text class="num1">
+								x{{item.skuQuantity}}
+							</text>
+						</view>
+						<view class="msginfo1">
+							<text class="msg1">
+								<!-- 7天无理由退货 -->
+							</text>
+							<text class="money1">
+								¥{{item.realAmount}}
+							</text>
+						</view>
+					</view>
+				</view>
+			</view>
+
+			<!-- 下一层 -->
+			<view class="cards">
+				<u-cell-group class="card">
+					<u-cell-item title="订单编号" :value="list[0].batchId"></u-cell-item>
+					<u-cell-item title="创建时间" :value="list[0].createdDate"></u-cell-item>
+					<u-cell-item title="配送方式" value="商家自配"></u-cell-item>
+					<!-- <u-cell-item title="物流单号" :value="list[0].deliverySn == null ? '' : list[0].deliverySn"></u-cell-item> -->
+				</u-cell-group>
+			</view>
+			<view class="cards">
+				<u-cell-group class="card">
+					<u-cell-item title="商品总额">￥{{ price }}</u-cell-item>
+					<u-cell-item title="运费" value="0.00"></u-cell-item>
+					<!-- <view class="goodsCode" v-if="list[0].orderStatus == '0' ? true : false">
+						<view class="code">
+							提货码
+						</view>
+						<view class="codeHint">
+							<input class="uni-input" v-model="cardCode" @blur="handerCode()"
+								placeholder="请输入有效的提货码" />
+							<image src="http://120.78.163.4:8082/index/dj.png" mode=""></image>
+						</view>
+					</view> -->
+					<u-cell-item title="订单备注" :value="list[0].note"></u-cell-item>
+					<view class="dibu" v-if="list[0].orderStatus == '0' ? true : false">
+						<view class="fukuan">
+							需付款:
+						</view>
+						<view class="moneys">
+							<text>¥ {{ price }}</text>
+							<image src="http://120.78.163.4:8082/commodity/dj.png" mode=""></image>
+						</view>
+					</view>
+				</u-cell-group>
+			</view>
+
+
+		</view>
+		<!-- 底部按钮 -->
+		<template>
+			<view class="bottom-view">
+				<button class="bottom-btn-left activeColor" type="default" v-for="(item,index) in buts" :key="index" @click="operationBtn(item)">{{item}}</button>
+			</view>
+		</template>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				Height: "810",
+				background: "none",
+				page: {
+					status: 'loadMore',
+					pageNum: 1,
+					pageSize: 10
+				},
+				cardCode:'', //提货码
+				price:0,
+				list:[],
+				buts:[],
+				oobj: {},
+			};
+		},
+		watch: {
+			list: {
+				handler() {
+					for (let i = 0; i < this.list[0].omsOrderItemEntityList.length; i++) { // 循环列表得到每个数据
+						this.price += Number(this.list[0].omsOrderItemEntityList[i].skuQuantity) * Number(this.list[0].omsOrderItemEntityList[i].skuPrice); // 所有价格加起来
+					}
+					this.price = this.price.toFixed(2);
+				},
+			},
+			deep: true
+		},
+		onLoad(option) {
+			let list = JSON.parse(decodeURIComponent(option.list));
+			this.oobj = list;
+			if(list.orderStatus === '0'){
+				uni.setNavigationBarTitle({
+					title:'待付款'
+				})
+			}else if(list.orderStatus === '1'){
+				uni.setNavigationBarTitle({
+					title:'待送货'
+				})
+			}else if(list.orderStatus === '2'){
+				uni.setNavigationBarTitle({
+					title:'送货中'
+				})
+			}else if(list.orderStatus === '3'){
+				uni.setNavigationBarTitle({
+					title:'已送完'
+				})
+			}else if(list.orderStatus === '6'){
+				uni.setNavigationBarTitle({
+					title:'已关闭'
+				})
+			}
+			this.getAppHeight();
+			this.getOrderList(list.batchId);
+			this.getbuts(list.orderStatus);
+		},
+		methods: {
+			handerCode() {
+				var _this = this;
+				this.list.forEach(v => {
+					if (_this.cardCode) {
+						_this.$u.api.queryByCardCode({
+							cardCode: _this.cardCode,
+							skuId: v.omsOrderItemEntityList[0].skuId
+						}).then(res => {
+							// console.log(res)
+							v.omsOrderItemEntityList[0].cardCode = _this.cardCode
+							uni.showToast({
+								title: '有效提货码'
+							})
+						}).catch(err => {
+							uni.showToast({
+								title: err.msg
+							})
+					
+						})
+					}
+				})
+			},
+			operationBtn(item){
+				// console.log(item)
+				switch (item) {
+					case '待付款':
+						this.topaid()
+						break;
+					case '取消订单':
+						this.cancelOrder()
+						break;
+					case '去复购':
+						this.repurchase()
+						break;
+					case '提醒发货':
+						this.remindDelivery()
+						break;
+					case '确认收货':
+						this.confirmReceipt()
+						break;
+					case '查看物流':
+						this.checkLogistics()
+						break;
+					case '申请退款':
+						this.refund()
+						break;
+				}
+			},
+			// 待付款
+			topaid() {
+				// let newArr = [];
+				// this.list[0].omsOrderItemEntityList[0].cardCode = this.cardCode
+				// newArr.push({
+				// 	imgUrl:this.list[0].omsOrderItemEntityList[0].skuPic,
+				// 	skuName:this.list[0].omsOrderItemEntityList[0].skuName,
+				// 	spuName:this.list[0].omsOrderItemEntityList[0].spuName,
+				// 	commNum:this.list[0].omsOrderItemEntityList[0].skuQuantity,
+				// 	price:this.list[0].omsOrderItemEntityList[0].skuPrice,
+				// 	spuType:this.list[0].omsOrderItemEntityList[0].spuType,
+				// 	deleteFlag:this.list[0].omsOrderItemEntityList[0].deleteFlag,
+				// 	skuTwoId:this.list[0].omsOrderItemEntityList[0].skuId,
+				// 	spuId:this.list[0].omsOrderItemEntityList[0].spuId,
+				// 	cardCode:this.list[0].omsOrderItemEntityList[0].cardCode,
+				// 	shopStatus:'0'
+				// })
+				
+				let spuId = [];
+				let skuId = [];
+				let num = [];
+				
+				this.list[0].omsOrderItemEntityList.map(item=>{
+					spuId.push(item.spuId)
+					skuId.push(item.skuId)
+					num.push(item.skuQuantity)
+				})
+				
+
+				uni.navigateTo({
+					url: '/pages/order/confirmOrder?supId='+ spuId.join(',')+ '&skuId=' +skuId.join(',') + '&num='+num.join(',')+'&orderSn='+this.list[0].orderSn+'&batchId='+this.list[0].batchId
+					// url: '/pages/order/confirmOrder?list=' + encodeURIComponent(JSON.stringify(newArr))
+				})
+			},
+			//取消订单
+			cancelOrder() {
+				let current = uni.getStorageSync('current')
+				this.$u.api.updateStatus({
+					orderSn:this.list[0].orderSn,
+					orderStatus:'6',
+					deliverySn:''
+				}).then(res=>{
+					uni.showToast({
+						title:'已取消订单'
+					})
+					uni.reLaunch({
+						url:'/pages/order/index?current=' + current + '&orderStatus=' + 0
+					})
+				}).catch()
+			},
+			//申请退款
+			refund(){
+				let item = this.oobj;
+				let str = [
+					"该订单为月付订单，不可申请退款",
+					"该订单为先送后付订单，不可申请退款",
+					"该订单为可退数量为0，不可申请退款",
+				]
+				let messageKey = -1;
+				if (item.totalCanRefundNum<=0) {
+					messageKey = 2;
+				}
+				if(item.payType == 3) {
+					messageKey = 0;
+				} else if (item.payType ==1) {
+					messageKey = 1;
+				}
+					
+				if (messageKey > -1) {
+					uni.showModal({
+						title: '提示',
+						content: str[messageKey],
+						confirmColor:'black',
+						showCancel: false,
+						confirmText: '确定',
+						success(res2) {
+							if (res2.confirm) {
+								console.log('没有操作');
+							}
+						}
+					});
+					
+				} else {
+					uni.navigateTo({
+						url: '/pages/my/torefund?id='+item.id+'&orderSn='+item.orderSn+'&payAmount='+item.payAmount+'&omsOrderItemEntityList='+encodeURIComponent(JSON.stringify(item.omsOrderItemEntityList))+'&totalRefundAmount='+item.totalRefundAmount+'&totalCanRefundNum='+item.totalCanRefundNum
+					});
+				}
+					
+				
+				// uni.navigateTo({
+				// 	url: '/pages/my/torefund?id='+this.list[0].id+'&orderSn='+this.list[0].orderSn+'&payAmount='+this.list[0].payAmount
+				// });
+				// uni.navigateTo({
+				// 	url:'/pages/my/sales?list=' + encodeURIComponent(JSON.stringify(this.list))
+				// })
+			},
+			//去复购
+			repurchase() {
+				console.log('去复购')
+			},
+			//提醒发货
+			remindDelivery() {
+				console.log('提醒发货')
+			},
+			//确认收货
+			confirmReceipt() {
+				console.log('确认收货')
+			},
+			//查看物流
+			checkLogistics() {
+				console.log('查看物流')
+			},
+			getbuts(type) {
+				switch (type) {
+					case '0':
+						this.buts = ['取消订单', '待付款']
+						break;
+					case '1':
+						this.buts = ['申请退款']
+						break;
+					case '2':
+						this.buts = ['申请退款']
+						break;
+				}
+			},
+			getOrderList(batchId) {
+				this.$u.api.queryOrder({
+					batchId
+				}).then(res => {
+					console.log(res);
+					this.list = res;
+				}).catch()
+			},
+			getAppHeight() {
+
+				this.Height = uni.getSystemInfoSync().windowHeight + 'px';
+
+
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	#topaid {
+		background: url(http://120.78.163.4:8082/my/bj.png) no-repeat;
+		background-size: contain;
+		background-color: #F0F0F0;
+
+		.list {
+			margin-bottom: 100rpx;
+			margin: 0 21rpx;
+			padding-top: 22rpx;
+			overflow-y: auto;
+			padding-bottom: 140rpx;
+
+			.item {
+
+				padding: 0 20rpx;
+				padding-bottom: 20rpx;
+				background-color: #FFFFFF;
+				border-radius: 28rpx;
+				padding-bottom: 9.5rpx;
+				flex-direction: column;
+
+				.top {
+
+					display: flex;
+					justify-content: space-between;
+					flex-wrap: nowrap;
+
+					&>.lfte {
+						color: #1A1A1A;
+						font-size: 28rpx;
+						font-weight: bold;
+						padding-top: 32rpx;
+						padding-bottom: 30rpx;
+
+						.defalt {
+							color: #FFFFFF;
+							background-color: $u-main-color;
+							border-radius: 4rpx;
+							padding: 6rpx 10rpx 7rpx 11rpx;
+							margin-right: 21rpx;
+							font-size: 20rpx;
+
+						}
+					}
+
+					&>.right {
+						color: #1A1A1A;
+						font-size: 28rpx;
+						font-weight: bold;
+						padding-top: 32rpx;
+						padding-bottom: 30rpx;
+					}
+				}
+
+				.text {
+					display: flex;
+					justify-content: space-between;
+
+					&>.lfte {
+						color: #1A1A1A;
+						font-size: 28rpx;
+						font-weight: bold;
+					}
+
+					&>.right {
+						image {
+							width: 12rpx;
+							height: 24rpx;
+							margin-left: 20rpx;
+						}
+					}
+				}
+
+				.lower {
+					display: flex;
+					justify-content: space-between;
+					padding-top: 33rpx;
+
+					&>.lfte {
+						color: #1A1A1A;
+						font-size: 28rpx;
+						display: flex;
+						align-items: center;
+						font-weight: bold;
+
+						image {
+							width: 28rpx;
+							height: 28rpx;
+
+						}
+
+					}
+
+					&>.right {
+						font-size: 24rpx;
+						color: #808080;
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+						width: 209rpx;
+
+						&>.item {
+							display: flex;
+							align-items: center;
+							justify-content: space-between;
+							flex-direction: row;
+							padding: 0;
+						}
+
+						text {
+							margin-left: 12rpx;
+						}
+					}
+				}
+			}
+
+			// 中间部分
+			.top1 {
+				padding: 0 20rpx;
+				background-color: #FFFFFF;
+				display: flex;
+				justify-content: space-between;
+				border-radius: 12rpx;
+				margin-top: 20rpx;
+
+				.lfte1 {
+					height: 220rpx;
+					margin-top: 10px;
+
+					image {
+						width: 180rpx;
+						height: 180rpx;
+						border-radius: 12rpx;
+					}
+				}
+
+				.right1 {
+					width: 469rpx;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+
+					.title1 {
+						font-size: 28rpx;
+						font-weight: bold;
+						color: #1A1A1A;
+						margin-top: 9px;
+						margin-left: 11px;
+
+					}
+
+					.text1 {
+						display: flex;
+						justify-content: space-between;
+
+						.specs1 {
+							font-size: 24rpx;
+							color: #808080;
+							margin-left: 11px;
+
+						}
+
+						.num1 {
+							font-size: 28rpx;
+							color: #1A1A1A;
+						}
+					}
+
+					.msginfo1 {
+						display: flex;
+						justify-content: space-between;
+
+						.msg1 {
+							color: $u-main-color;
+							font-size: 20rpx;
+							// background: #FFF0E5;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							border-radius: 12rpx;
+							width: 160rpx;
+							height: 32rpx;
+							margin-bottom: 20px;
+							margin-left: 9px;
+
+						}
+
+						.money1 {
+							color: $u-main-color;
+							font-size: 32rpx;
+							font-weight: bold;
+						}
+					}
+				}
+
+			}
+
+			.top2 {
+				margin-top: -20rpx;
+			}
+
+			.botom1 {
+				display: flex;
+				flex-direction: row-reverse;
+				align-items: center;
+
+				.but1 {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					background: #FF6633;
+					color: #FFFFFF;
+					font-size: 24rpx;
+					width: 128rpx;
+					height: 48rpx;
+					border-radius: 12rpx;
+					margin-left: 10px;
+
+				}
+
+				.button1 {
+					color: #4D4D4D;
+					background: none;
+					border: 2rpx solid #4D4D4D;
+					border-radius: 8rpx;
+
+				}
+			}
+
+
+		}
+
+		.cards {
+			margin-top: 20rpx;
+			font-size: 28rpx;
+			border-radius: 12rpx;
+			color: #1A1A1A;
+			background-color: #F0F0F0;
+			.goodsCode {
+				display: flex;
+				justify-content: space-between;
+				padding-top: 53rpx;
+				padding-left: 19rpx;
+				padding-bottom: 27rpx;
+			
+				.code {
+					font-size: 28rpx;
+					font-family: Source Han Sans CN;
+					color: #1A1A1A;
+					font-weight: bold;
+					display: flex;
+					align-items: center;
+				}
+			
+				.codeHint {
+					display: flex;
+					align-items: center;
+					padding-right: 20rpx;
+			
+					image {
+						width: 12rpx;
+						height: 24rpx;
+						padding-left: 20rpx;
+					}
+				}
+			}
+			.card {
+				u-cell-item:nth-child(1) {
+					.u-cell_title {
+						color: #1A1A1A !important;
+						font-weight: bold !important;
+					}
+				}
+
+				// 
+				u-cell-item:nth-child(2) {
+					.u-cell_title {
+						color: #1A1A1A !important;
+						font-weight: bold !important;
+					}
+				}
+
+				// 
+				u-cell-item:nth-child(3) {
+					.u-cell_title {
+						color: #1A1A1A !important;
+						font-weight: bold !important;
+					}
+				}
+
+				// 
+				u-cell-item:nth-child(1) {
+					.u-cell__value {
+						color: #1A1A1A !important;
+						font-weight: bold !important;
+					}
+				}
+
+				u-cell-item:nth-child(2) {
+					.u-cell__value {
+						color: #1A1A1A !important;
+						font-weight: bold !important;
+					}
+				}
+
+				u-cell-item:nth-child(3) {
+					.u-cell__value {
+						color: #1A1A1A !important;
+						font-weight: bold !important;
+					}
+				}
+			}
+
+			.dibu {
+				display: flex;
+				justify-content: flex-end;
+				margin-right: 21.5px;
+				padding: 20rpx 0;
+				.fukuan {
+					font-size: 28rpx;
+					color: #1A1A1A;
+					font-weight: bold;
+				}
+
+				.moneys {
+					color: $u-main-color;
+					font-size: 32rpx;
+					text{
+						padding-left: 20rpx;
+					}
+					image {
+						width: 12rpx;
+						height: 24rpx;
+						margin-left: 7px;
+						padding-left: 21rpx;
+					}
+				}
+
+
+			}
+		}
+
+
+		.bottom-view {
+			width: 100%;
+			height: 88rpx;
+			background-color: #FFFFFF;
+			position: fixed;
+			bottom: 0rpx;
+			z-index: 100;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			.bottom-btn-left {
+				width: 128rpx;
+				height: 48rpx;
+				color: #4D4D4D;
+				border-radius: 8rpx;
+				font-size: 24rpx;
+				line-height: 24rpx;
+				text-align: center;
+				padding: 0rpx; //文字如果换行，注意清除内边距
+				border: 1rpx solid #4D4D4D;
+				margin: 0;
+				margin-right: 20rpx;
+				box-sizing: border-box;
+				display: flex;
+				flex-wrap: nowrap;
+				justify-content: center;
+				align-items: center;
+			}
+			.activeColor{
+				background: $u-main-color;
+				color: #FFFFFF;
+				border: none;
+			}
+			.bottom-btn-right {
+				width: 128rpx;
+				height: 48rpx;
+				color: #FFFFFF;
+				border-radius: 8rpx;
+				font-size: 24rpx;
+				line-height: 24rpx;
+				text-align: center;
+				padding: 0rpx; //文字如果换行，注意清除内边距
+				background-color: $u-main-color;
+				position: absolute;
+				bottom: 20rpx;
+				right: 20rpx;
+				box-sizing: border-box;
+				display: flex;
+				flex-wrap: nowrap;
+				justify-content: center;
+				align-items: center;
+			}
+
+		}
+
+	}
+</style>

@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "我的",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true,
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "phone-modal": "/components/phone-modal/phone-modal",
+    "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
+    "tarbar": "/components/tarbar/tarbar"
+  }
+}

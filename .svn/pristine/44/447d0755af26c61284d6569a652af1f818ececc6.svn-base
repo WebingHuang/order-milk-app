@@ -1,0 +1,117 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+#commodity {
+  margin-top: 32rpx;
+}
+#commodity .search {
+  padding: 0 22rpx;
+}
+#commodity .list {
+  padding: 0 22rpx;
+  margin-top: 32rpx;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-bottom: 120rpx;
+}
+#commodity .list .list_item {
+  width: 344rpx;
+  height: 517rpx;
+}
+#commodity .list .list_item .cover {
+  width: 100%;
+  height: 344rpx;
+  background: #3e8bf3;
+  border-radius: 12rpx;
+  position: relative;
+}
+#commodity .list .list_item .cover image {
+  width: 100%;
+  height: 100%;
+  border-radius: 12rpx;
+}
+#commodity .list .list_item .cover .activity {
+  position: absolute;
+  top: 0rpx;
+  color: #fff;
+  background: red;
+  font-size: 20rpx;
+  padding: 6rpx 8rpx;
+  border-radius: 0 0 8rpx 0;
+}
+#commodity .list .list_item .text .name {
+  font-size: 28rpx;
+  font-weight: bold;
+  padding-top: 18rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #000000;
+}
+#commodity .list .list_item .text .attribute {
+  padding-top: 12rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+#commodity .list .list_item .text .attribute .discount {
+  display: flex;
+  align-items: center;
+}
+#commodity .list .list_item .text .attribute .discount .member {
+  color: #FFFFFF;
+  font-size: 16rpx;
+  border-radius: 4rpx;
+  width: 60rpx;
+  height: 24rpx;
+  background: linear-gradient(#3e8bf3, #4193ff);
+  /* 标准语法 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#commodity .list .list_item .text .attribute .discount .member_price {
+  color: #3e8bf3;
+  font-size: 22rpx;
+  font-weight: bold;
+  margin-left: 4rpx;
+}
+#commodity .list .list_item .text .attribute .price {
+  color: #3e8bf3;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+#commodity .list .list_item .text .attribute .purchase {
+  color: #4D4D4D;
+  font-size: 22rpx;
+  font-weight: bold;
+}
+#commodity .noneList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#commodity .noneList image {
+  padding-top: 263rpx;
+  width: 480rpx;
+  height: 313rpx;
+}
+#commodity .noneList text {
+  padding-top: 40rpx;
+  font-size: 32rpx;
+  font-family: Source Han Sans CN;
+  font-weight: 500;
+  color: #808080;
+}
+#commodity #tarbar {
+  width: 100%;
+  z-index: 9999;
+  position: fixed;
+  bottom: 0;
+}
+

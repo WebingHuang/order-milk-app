@@ -1,0 +1,93 @@
+
+
+const api = {
+	
+	getPaySign:"/om/api/wechatpay/pay.do", //微信支付
+	
+	getPaySignTwo:"/om/api/wechatpay/payTwo.do", //余额支付
+	payMonthly: "/om/api/wechatpay/payMonthly.do", // 使用月付支付
+	beforePaying: "/om/api/wechatpay/beforePaying.do", // 先送后付
+	sendPay:"/om/api/wechatpay/wechatpay_callback_shsd",
+	queryPayInfoList:'/om/sys/paymentInfo/queryPayInfoList',
+	queryOrder:'/om/common/OmsOrder/queryOrder',
+	applyRefund:'/om/sys/refundInfo/applyRefund',
+	confirmReceipt:'/om/applet/confirmReceipt/confirmReceipt',
+	updateStatus:'/om/common/OmsOrder/updateStatus',
+	checkRefund:'/om/sys/refundInfo/checkRefund',
+	refundInfo:'/om/sys/refundInfo/detail',
+	queryUserOrOrder:'/om/statistics/queryUserOrOrder',
+	BindingBankCard:'/om/Applet/user/BindingBankCard',
+	getMessageCode:'/om/sys/sendValidateCode',
+	queryByBank:'/om/Applet/user/queryByBank', //查询银卡是否存在
+	getUserAddr:"/om/sys/sysaddress/getDefaultAddr", //查询用户默认地址
+	queryBankList:'/om/Applet/user/queryList', //查询银行卡列表
+	getCardCodeByUserId:"/om/sys/cardUserProd/queryCardCode", //根据商品类型查询对应的用户的提货卡
+	getUserInfo:'/om/sys/user/detail', //查询用户信息
+	withdraw:'/om/Applet/user/withdraw', //余额提现
+	queryMoneyInfoList:'/om/sys/moneyInfo/queryMoneyInfoList', //查询余额明细
+	
+	getSecretKey:"/om/shop/queryKeyByCode", //根据编号查询账号密码
+	
+
+	
+	
+}
+
+
+
+
+export function paymentApi(vm) {
+	
+	
+	
+	let  getPaySign = (params = {}) => vm.$u.get(api.getPaySign, params);
+	let  getPaySignTwo = (params = {}) => vm.$u.get(api.getPaySignTwo, params);
+	let  payMonthly = (params = {}) => vm.$u.get(api.payMonthly, params);
+	let  beforePaying = (params = {}) => vm.$u.get(api.beforePaying, params);
+	
+	let  sendPay = (params = {}) => vm.$u.get(api.sendPay, params);
+	let  queryPayInfoList = (params = {}) => vm.$u.post(api.queryPayInfoList, params);
+	let  queryOrder = (params = {}) => vm.$u.get(api.queryOrder, params);
+	let  applyRefund = (params = {}) => vm.$u.post(api.applyRefund, params);
+	let  confirmReceipt = (params = {}) => vm.$u.post(api.confirmReceipt, params);
+	let  updateStatus = (params = {}) => vm.$u.get(api.updateStatus, params);
+	let  checkRefund = (params = {}) => vm.$u.get(api.checkRefund, params);
+	let  refundInfo = (params = {}) => vm.$u.get(api.refundInfo, params);
+	let  queryUserOrOrder = (params = {}) => vm.$u.get(api.queryUserOrOrder, params);
+	let  BindingBankCard = (params = {}) => vm.$u.post(api.BindingBankCard, params);
+	let  getMessageCode = (params = {}) => vm.$u.post(api.getMessageCode, params);
+	let  queryByBank = (params = {}) => vm.$u.get(api.queryByBank, params);
+	let  queryBankList = (params = {}) => vm.$u.get(api.queryBankList, params);
+	let  getUserAddr = (params = {}) => vm.$u.get(api.getUserAddr, params);
+	let  getCardCodeByUserId = (params = {}) => vm.$u.get(api.getCardCodeByUserId, params);
+	let  getUserInfo = (params = {}) => vm.$u.post(api.getUserInfo, params);
+	let  withdraw = (params = {}) => vm.$u.post(api.withdraw, params);
+	let  queryMoneyInfoList = (params = {}) => vm.$u.post(api.queryMoneyInfoList, params);
+	
+	let  getSecretKey = (params = {}) => vm.$u.get(api.getSecretKey, params);
+	
+
+	return {
+		getPaySign,
+		getPaySignTwo,
+		sendPay,
+		queryPayInfoList,
+		queryOrder,
+		applyRefund,
+		confirmReceipt,
+		updateStatus,
+		checkRefund,
+		refundInfo,
+		queryUserOrOrder,
+		BindingBankCard,
+		getMessageCode,
+		queryByBank,
+		queryBankList,
+		getUserAddr,
+		getCardCodeByUserId,
+		getUserInfo,
+		withdraw,
+		queryMoneyInfoList,
+		getSecretKey
+	}
+}

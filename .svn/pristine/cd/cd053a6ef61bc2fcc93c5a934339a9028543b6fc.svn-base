@@ -1,0 +1,141 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+#return {
+  background-color: #F0F0F0;
+}
+#return .item {
+  padding: 0 32rpx;
+  padding-bottom: 20rpx;
+  background-color: #FFFFFF;
+  padding-top: 20rpx;
+  width: 750rpx;
+  height: 140rpx;
+  display: flex;
+}
+#return .item .square image {
+  width: 100rpx;
+  height: 100rpx;
+}
+#return .item .top {
+  font-size: 28rpx;
+  display: inline-block;
+  text-align: left;
+  width: 480rpx;
+  color: #1A1A1A;
+  position: absolute;
+  right: 118rpx;
+}
+#return .item .top > .lfte {
+  font-size: 24rpx;
+  color: #808080;
+}
+#return .item .top > .biao {
+  color: #1A1A1A;
+  font-weight: bold;
+}
+#return .cards .card {
+  margin: 5rpx;
+  width: 100%;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #1A1A1A;
+}
+#return .cards .card .goodsCode {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 53rpx;
+  padding-left: 19rpx;
+  padding-bottom: 27rpx;
+}
+#return .cards .card .goodsCode .code {
+  font-size: 28rpx;
+  font-family: Source Han Sans CN;
+  color: #1A1A1A;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  padding-left: 20rpx;
+}
+#return .cards .card .goodsCode .codeHint {
+  display: flex;
+  align-items: center;
+  padding-right: 20rpx;
+  flex: 1;
+  justify-content: space-around;
+}
+#return .cards .card .goodsCode .codeHint image {
+  width: 12rpx;
+  height: 24rpx;
+  padding-left: 20rpx;
+}
+#return .cards .card u-cell-item:nth-child(2) .u-cell__value {
+  color: #3e8bf3 !important;
+}
+#return .upload-text {
+  display: flex;
+  margin-top: 22rpx;
+}
+#return .upload-text .left {
+  margin-top: 11rpx;
+  color: #1A1A1A;
+  background-color: #FFFFFF;
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-left: 31rpx;
+}
+#return .upload-text .left:after {
+  color: #808080;
+  background-color: #FFFFFF;
+  font-weight: normal;
+}
+#return .upload {
+  padding-bottom: 20rpx;
+  background-color: #FFFFFF;
+}
+#return .upload .upload-button .slot-btn {
+  background: url(http://120.78.163.4:8082/feedback/upload.png) no-repeat;
+  background-size: cover;
+  width: 140rpx;
+  height: 140rpx;
+  margin-left: 32rpx;
+  margin-top: 17rpx;
+  display: flex;
+  flex-direction: column;
+}
+#return .upload .upload-button .slot-btn .top {
+  margin-top: 66rpx;
+  margin-left: 31rpx;
+  font-size: 20rpx;
+}
+#return .upload .upload-button .slot-btn .bottom {
+  margin-left: 28rpx;
+  margin-bottom: 21rpx;
+  font-size: 20rpx;
+}
+#return .botomBtn {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 27px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#return .botomBtn .adres {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 400rpx;
+  height: 68rpx;
+  background-color: #FF6633;
+  color: #FFFFFF;
+  font-weight: bold;
+  border-radius: 100rpx;
+  letter-spacing: 1px;
+  font-size: 32rpx;
+}
+

@@ -1,0 +1,652 @@
+<template>
+	<pageRefund :title="title" :btnState="btnState">
+		<view id="refund-processing">
+			<view class="top-info" v-if="logisticsInfo.refundStatus == '1' ? true : false">
+				<!-- 退货地址卡片 -->
+				<template>
+					<view class="seller-info" v-for="(item,index) in logisticsInfo.addressList" :key="index">		
+						<view>
+							{{logisticsInfo.createdDate}}
+						</view>
+			
+						<view class="seller-contact">
+							<text>卖家收货地址：</text>
+							<text>{{item.receivingName}} {{item.receivingMobile}}</text>
+							<text>{{item.provincesCode}} {{item.cityCode}} {{item.areaCode}} {{item.address}}</text>
+						</view>
+			
+					</view>
+				</template>
+			
+				<!-- 退货申请信息卡片 -->
+				<template>
+					<view class="logistics-info" v-if="logisticsInfo.refundStatus == '1' || logisticsInfo.expSn != '' ? true : false">
+						<text>{{logisticsInfo.updateDate}}</text>
+						<!-- <text>买家寄出物流单号：</text>
+						<text>{{logisticsInfo.expSn}}</text> -->
+					</view>
+				</template>
+			</view>
+			
+			<view class="top-refund-time-steps" v-show="logisticsInfo.refundStatus == '0' ? true : false">
+				<!-- 退款步骤 -->
+				<template>
+					<view class="refund-time-steps">
+						<view class="refund-steps">
+							<u-steps un-active-color="#1A1A1A" :list="refundStepsList" mode="number" :current="currentIndex"
+								active-color="$u-main-color"></u-steps>
+						</view>
+					</view>
+				</template>
+			</view>
+			
+			<template>
+				<view class="refund-goodinfo"  v-for="(item,index) in list.omsOrderItemEntityList" :key="index">
+					<view class="top">
+						<view class="left-box">
+							<view class="left-img">
+								<image :src="item.skuPic" mode=""></image>
+							</view>
+						</view>			
+						<view class="right-goodsinfo">
+							<view class="first-row">{{item.spuName}}</view>			
+							<view class="second-row">
+								<view class="left-config">
+									{{item.skuName}}
+								</view>			
+								<view class="number">
+									x{{item.canRefundNum}}
+								</view>
+							</view>			
+							<view class="bottom-info">
+								<view>
+									<view>
+										<!-- 7天无理由退货 -->
+									</view>
+								</view>
+								<view>
+									¥{{item.refundAmount}}
+								</view>			
+							</view>
+						</view>
+					</view>		
+				</view>
+				<view class="refund-goodinfo" v-for="(item,index) in [list.omsOrderItemEntityList[0]]" :key="index">	
+					<view class="bottom">
+						<u-cell-group>
+								<u-cell-item :title-style="titleStyle" :value-style="titleStyle" title="退货原因" :arrow="true">{{logisticsInfo.refundMes}}</u-cell-item>
+								<u-cell-item :title-style="titleStyle" :value-style="titleStyle" title="退订金额" :arrow="true">¥{{info.refund}}</u-cell-item>
+								<!-- <u-cell-item :title-style="titleStyle" :value-style="titleStyle" title="退订金额" :arrow="true">¥{{item.realAmount}}</u-cell-item> -->
+								<u-cell-item :title-style="titleStyle" :value-style="titleStyle" title="申请件数" :arrow="true">{{info.refundNum}}件</u-cell-item>
+								<!-- <u-cell-item :title-style="titleStyle" :value-style="titleStyle" title="申请件数" :arrow="true">{{list.omsOrderItemEntityList.length}}件</u-cell-item> -->
+								<u-cell-item :title-style="titleStyle" :value-style="titleStyle" title="申请时间" :arrow="true">{{item.createdDate}}</u-cell-item>
+								<u-cell-item :title-style="titleStyle" :value-style="titleStyle" title="退货编号" :arrow="true">{{list.orderSn}}</u-cell-item>
+						</u-cell-group>
+					</view>
+				
+				</view>
+			</template>
+			<!-- 弹出层填写订单号 -->
+			<template>				
+				<u-popup mask-close-able v-model="show" mode="center" width="260px" height="168px" border-radius="20">
+					<view class="popup">
+						<!-- <view class="top-title">填写物流单号</view>
+						<input class="logistics-input" type="text" v-model="trackingNum" placeholder="请输入物流单号"/> -->
+						<view class="bottom-btn-group">
+							<view class="cancel-btn" @click="this.show = false">取消</view>
+							<view class="confirm-btn" @click="affirm">确定</view>
+						</view>
+					</view>
+				</u-popup>				
+			</template>
+		</view>
+		<!-- 底部按钮 -->
+		<template>
+			<view class="bottom-view">
+				<button class="bottom-btn" :class="logisticsInfo.refundStatus == '1' ? 'activeType' : ''" 
+				type="default" :disabled="logisticsInfo.refundStatus == '1' ? false : true" v-for="(item,index) in btnState" :key="index" @tap="handlerClick(item)">{{item}}</button>
+			</view>
+		</template>
+	</pageRefund>
+</template>
+
+<script>
+	const btnState = {
+		// '5':['已寄件'],
+	}
+	import pageRefund from '../../components/page-refund/page-refund.vue'
+	export default {
+		components: {
+			pageRefund
+		},
+		data() {
+			return {
+				title: '',
+				Height: "",
+				trackingNum:'',
+				refundStepsList: [{
+						name: '待审核'
+					},
+					{
+							name: '卖家同意退款'
+					},
+					{
+						name: '退款成功'
+					},
+				],
+				currentIndex:0, //设置当前处于第几步
+				show:false,
+				list:[],
+				logisticsInfo:[],
+				btnState:[],
+				info: {},
+			}
+		},
+		methods: {
+			//获取系统高度
+			getAppHeight() {
+				this.Height = uni.getSystemInfoSync().windowHeight + 'px';
+			},
+			getTitle(orderStatus){
+				if(orderStatus == '4'){
+					this.title = '退款中'
+					this.btnState = btnState[orderStatus]
+				}else if(orderStatus == '5'){
+					this.title = '已退款'
+					this.btnState = btnState[orderStatus]
+				}else if(orderStatus == '6'){
+					this.title = '已关闭'
+					this.btnState = btnState[orderStatus]
+				}
+			},
+			affirm(){
+				// console.log('确认',this.list)
+				this.$u.api.checkRefund({
+					dataVersion:this.logisticsInfo.dataVersion,
+					itemId:this.list.id,
+					orderSn:this.list.orderSn,
+					refundStatus:'3',
+					expSn:this.trackingNum,
+					refundChannel:'2'
+				}).then(res=>{
+					uni.showToast({
+						title:'填写成功'
+					})
+					this.getRefundInfo();
+				}).catch()
+			},
+			handlerClick(item){
+				if(item == '已寄件'){
+					this.show = true;
+				}else if(item == '删除记录'){
+					console.log('删除记录')
+				}
+			},
+			getRefundInfo(){
+				this.$u.api.refundInfo({
+					itemId:this.list.id,
+					orderSn:this.list.orderSn,
+				}).then(res=>{
+					// console.log(res)
+					this.info = res;
+					if(res.refundAddr){
+						let addressList = [...JSON.parse(res.refundAddr)]
+						res['addressList'] = addressList
+						this.logisticsInfo = res
+						if(res.refundStatus == '1'){
+							this.show = true
+						}else{
+							this.show = false
+						}
+					}else{
+						this.logisticsInfo = res
+					}
+					if(res.refundStatus == '0'){
+						this.currentIndex = 0
+					}else if(res.refundStatus == '1'){
+						this.currentIndex = 1
+					}else if(res.refundStatus == '4'){
+						this.currentIndex = 3
+					}
+				}).catch()
+			},
+		},
+		onLoad(option) {
+			this.list = JSON.parse(decodeURIComponent(option.list));
+			console.log(1111, this.list);
+			this.getTitle(this.list.orderStatus);
+			this.getRefundInfo();
+			this.getAppHeight()
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	#refund-processing{
+		margin-bottom: 210rpx;
+		.top-info {
+			.seller-info {
+				background-color: #FFFFFF;
+				border-radius: 12rpx;
+				width: 708rpx;
+				height: 195rpx;
+				margin: 0 auto;
+				padding-left: 20rpx;
+				padding-top: 20rpx;
+				display: flex;
+				flex-direction: column;
+				&>view:first-child {
+					font-size: 24rpx;
+					line-height: 24rpx;
+					color: #808080;
+				}
+				.seller-contact {
+					display: flex;
+					flex-direction: column;
+					&>text:first-child {
+						height: 28rpx;
+						line-height: 28rpx;
+						font-size: 28rpx;
+						color: #1A1A1A;
+						margin-top: 19rpx;
+					}
+					&>text:nth-child(2) {
+						height: 28rpx;
+						line-height: 28rpx;
+						font-size: 28rpx;
+						color: #1A1A1A;
+						margin-top: 17rpx;
+					}
+					&>text:nth-child(3) {
+						height: 28rpx;
+						line-height: 28rpx;
+						font-size: 28rpx;
+						color: #1A1A1A;
+						margin-top: 19rpx;
+					}
+				}
+			}
+			.logistics-info {
+				background-color: #FFFFFF;
+				border-radius: 12rpx;
+				width: 708rpx;
+				height: 146rpx;
+				margin: 0 auto;
+				margin-top: 20rpx;
+				padding-left: 20rpx;
+				padding-top: 20rpx;
+				display: flex;
+				flex-direction: column;
+				&>text:first-child {
+					font-size: 24rpx;
+					line-height: 24rpx;
+					color: #808080;
+				}
+				&>text:nth-child(2) {
+					height: 28rpx;
+					line-height: 28rpx;
+					font-size: 28rpx;
+					color: #1A1A1A;
+					margin-top: 17rpx;
+				}
+				&>text:nth-child(3) {
+					height: 28rpx;
+					line-height: 28rpx;
+					font-size: 28rpx;
+					color: #1A1A1A;
+					margin-top: 19rpx;
+				}
+			}
+		}
+		.refund-time-steps {
+			width: 708rpx;
+			height: 185rpx;
+			border-radius: 12rpx;
+			margin: 0 auto;
+			background-color: #FFFFFF;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			flex-wrap: wrap;
+			.refund-steps {
+				width: 708rpx;
+				height: 92rpx;
+				.u-steps__item__text--row {
+					color: #000 !important;
+				}
+			}
+			.time {
+				width: 100%;
+				display: flex;
+				justify-content: space-around;
+				&>text {
+					color: #808080;
+					font-size: 20rpx;
+					width: auto;
+				}
+			}
+		}
+		.refund-goodinfo {
+			margin: 0 auto;
+			margin-top: 30rpx;
+			width: 708rpx;
+			height: 222rpx;
+			background-color: #FFFFFF;
+			border-radius: 12rpx;
+			.top {
+				width: 100%;
+				height: 220rpx;
+				margin: 0 auto;
+				display: flex;
+				.left-box {
+					width: 220rpx;
+					height: 220rpx;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					.left-img {
+						image{
+							padding: 20rpx;
+							border-radius: 16rpx;
+							width: 180rpx;
+							height: 180rpx;
+						}
+					}
+				}
+				.right-goodsinfo {
+					margin-top: 18rpx;
+					.first-row {
+						font-size: 28rpx;
+						color: #1A1A1A;
+						line-height: 36rpx;
+						margin-right: 20rpx;
+						letter-spacing: 1rpx;
+					}
+					.second-row {
+						font-size: 24rpx;
+						color: #808080;
+						margin-top: 17rpx;
+						width: 488rpx;
+						height: 23rpx;
+						line-height: 23rpx;
+					}
+					.left-config {
+						float: left;
+					}
+					.number {
+						color: #1A1A1A;
+						font-size: 28rpx;
+						font-weight: bold;
+						float: right;
+						margin-right: 20rpx;
+					}
+					.number:after {
+						content: "";
+						display: block;
+						visibility: hidden;
+						clear: both;
+					}
+					.bottom-info {
+						margin-top: 36rpx;
+						line-height: 25rpx;
+						height: 25rpx;
+						&>view:first-child {
+							font-size: 20rpx;
+							float: left;
+							width: 160rpx;
+							height: 32rpx;
+							// background-color: #FFF0E5;
+							color: $u-main-color;
+							text-align: center;
+						}
+						&>view:nth-child(2) {
+							color: $u-main-color;
+							font-size: 32rpx;
+							float: right;
+							margin-right: 20rpx;
+						}
+					}
+				}
+			}
+			.bottom {
+				margin-top: 45rpx;
+				height: 400rpx;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-evenly;
+			}
+		}
+		.bottom-view {
+			width: 100%;
+			height: 88rpx;
+			background-color: #FFFFFF;
+			position: fixed;
+			bottom: 0rpx;
+			.bottom-btn {
+				width: 128rpx;
+				height: 48rpx;
+				color: #4D4D4D;
+				border-radius: 8rpx;
+				font-size: 24rpx;
+				line-height: 24rpx;
+				text-align: center;
+				padding: 0rpx; //文字如果换行，注意清除内边距
+				border: 1rpx solid #4D4D4D;
+				position: absolute;
+				bottom: 20rpx;
+				right: 20rpx;
+				box-sizing: border-box;
+				display: flex;
+				flex-wrap: nowrap;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		
+		}
+		.refund-goodinfo {
+			margin: 0 auto;
+			margin-top: 30rpx;
+			width: 708rpx;
+			height: 222rpx;
+			background-color: #FFFFFF;
+			border-radius: 12rpx;
+			.top {
+				width: 100%;
+				margin: 0 auto;		
+				display: flex;
+				padding-bottom: 20rpx;
+				.left-box {
+					width: 220rpx;
+					height: 220rpx;
+					display: flex;
+					justify-content: center;
+					align-items: center;		
+					.left-img {	
+						image{
+							width: 180rpx;
+							height: 180rpx;
+							border-radius: 16rpx;
+							padding: 20rpx;
+						}
+					}
+				}		
+				.right-goodsinfo {
+					margin-top: 18rpx;		
+					.first-row {
+						font-size: 28rpx;
+						color: #1A1A1A;
+						line-height: 36rpx;
+						margin-right: 20rpx;
+						letter-spacing: 1rpx;		
+					}		
+					.second-row {
+						font-size: 24rpx;
+						color: #808080;
+						margin-top: 17rpx;		
+						width: 488rpx;
+						height: 23rpx;
+						line-height: 23rpx;
+					}		
+					.left-config {
+						float: left;
+					}		
+					.number {
+						color: #1A1A1A;
+						font-size: 28rpx;
+						font-weight: bold;		
+						float: right;
+						margin-right:20rpx;
+					}		
+					.number:after {
+						content: "";
+						display: block;
+						visibility: hidden;
+						clear: both;
+					}					
+					.bottom-info {
+						margin-top: 36rpx;
+						line-height: 25rpx;
+						height: 25rpx;
+						&>view:first-child {
+							font-size: 20rpx;							
+							float: left;
+							width: 160rpx;
+							height: 32rpx;
+							// background-color: #FFF0E5;
+							color: $u-main-color;
+							text-align: center;
+						}
+						&>view:nth-child(2) {
+							color: $u-main-color;
+							font-size: 32rpx;
+							float: right;
+							margin-right:20rpx;
+						}
+					}		
+				}
+			}
+			.bottom {
+				margin-top: 45rpx;
+				height: 400rpx;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-evenly;
+			}
+		}
+		.bottom-view {
+			width: 100%;
+			height: 88rpx;
+			background-color: #FFFFFF;			
+			position: fixed;
+			bottom: 0rpx;			
+			.bottom-btn {
+				width: 128rpx;
+				height: 48rpx;
+				color: #FFFFFF;
+				border-radius: 8rpx;
+				font-size: 24rpx;
+				line-height: 24rpx;
+				text-align: center;
+				padding: 0rpx;  //文字如果换行，注意清除内边距				
+				background-image: linear-gradient(#FF9933,#FF6633);				
+				position: absolute;
+				bottom: 20rpx;
+				right: 20rpx;				
+				box-sizing: border-box;
+				display: flex;
+				flex-wrap:nowrap;				
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}			
+		}
+		.popup {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			.top-title {
+				color: #1A1A1A;
+				font-size: 28rpx;
+				font-weight: bold;
+				margin-top: 31rpx;
+			}
+			.logistics-input {
+				margin: 0 auto;
+				margin-top: 51rpx;
+				width: 480rpx;
+				height: 100rpx;				
+			}
+			.bottom-btn-group {
+				display: flex;
+				flex-direction: row;
+				width: 100%;
+				height: 88rpx;
+				position: absolute;
+				bottom: 0rpx;
+				&>view {
+					flex: 1;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+				.cancel-btn {
+					color: #808080;
+					background-color: #fff;					
+					border-top-left-radius: 0rpx;
+					border-top-right-radius: 0rpx;
+					border-bottom-right-radius: 0rpx;
+					box-shadow: 0rpx -1rpx 0rpx 0rpx rgba(6, 0, 1, 0.1), 1rpx 0rpx 0rpx 0rpx rgba(6, 0, 1, 0.1);
+					border-radius: 0rpx 0rpx 0rpx 20rpx;					
+					font-size: 32rpx;
+				}
+				.confirm-btn {
+					color: #FFFFFF;
+					background-color: $u-main-color;					
+					border-top-right-radius: 0rpx;
+					border-top-left-radius: 0rpx;
+					border-bottom-left-radius: 0rpx;
+					box-shadow: 0rpx -1rpx 0rpx 0rpx rgba(6, 0, 1, 0.1), 1rpx 0rpx 0rpx 0rpx rgba(6, 0, 1, 0.1);
+					border-radius: 0rpx 0rpx 20rpx 0rpx;
+					
+					font-size: 32rpx;
+				}
+			}
+		}
+	}
+	.bottom-view {
+		width: 100%;
+		height: 88rpx;
+		background-color: #FFFFFF;
+		position: fixed;
+		bottom: 0rpx;
+		z-index: 100;
+		.bottom-btn {
+			width: 128rpx;
+			height: 48rpx;
+			color: #4D4D4D;
+			border-radius: 8rpx;
+			font-size: 24rpx;
+			line-height: 24rpx;
+			text-align: center;
+			padding: 0rpx; //文字如果换行，注意清除内边距
+			border: 1rpx solid #4D4D4D;
+			position: absolute;
+			bottom: 20rpx;
+			right: 20rpx;
+			box-sizing: border-box;
+			display: flex;
+			flex-wrap: nowrap;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border: none;
+		}
+		.activeType{
+			background: linear-gradient(180deg, #FF9933, #FF6633);
+			color: #FFFFFF;
+		}
+	}
+</style>

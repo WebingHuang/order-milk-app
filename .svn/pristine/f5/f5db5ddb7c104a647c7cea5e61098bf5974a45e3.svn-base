@@ -1,0 +1,88 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+.feedback.data-v-aa8146c2 {
+  background-color: #F0F0F0;
+}
+.feedback .main.data-v-aa8146c2 {
+  border-top: 0.5rpx solid #F0F0F0;
+  background-color: #FFFFFF;
+  height: auto;
+}
+.feedback .main .message-input.data-v-aa8146c2 {
+  height: 88rpx;
+  border-bottom: 0.5rpx solid #F0F0F0;
+  padding-left: 32rpx;
+  font-size: 28rpx;
+  color: #808080;
+}
+.feedback .main .message-area.data-v-aa8146c2 {
+  border-bottom: 0.5rpx solid #F0F0F0;
+  padding-left: 32rpx;
+  font-size: 28rpx;
+  color: #808080;
+}
+.feedback .main .upload-text.data-v-aa8146c2 {
+  display: flex;
+  margin-top: 22rpx;
+}
+.feedback .main .upload-text .left.data-v-aa8146c2 {
+  color: #1A1A1A;
+  background-color: #FFFFFF;
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-left: 31rpx;
+}
+.feedback .main .upload-text .left.data-v-aa8146c2:after {
+  content: "(选填)";
+  color: #808080;
+  background-color: #FFFFFF;
+  font-weight: normal;
+}
+.feedback .main .upload.data-v-aa8146c2 {
+  padding-bottom: 20rpx;
+}
+.feedback .main .upload .upload-button .slot-btn.data-v-aa8146c2 {
+  background: url(http://120.78.163.4:8082/feedback/upload.png) no-repeat;
+  background-size: cover;
+  width: 140rpx;
+  height: 140rpx;
+  margin-left: 32rpx;
+  margin-top: 17rpx;
+  display: flex;
+  flex-direction: column;
+}
+.feedback .main .upload .upload-button .slot-btn .top.data-v-aa8146c2 {
+  margin-top: 66rpx;
+  margin-left: 31rpx;
+  font-size: 20rpx;
+}
+.feedback .main .upload .upload-button .slot-btn .bottom.data-v-aa8146c2 {
+  margin-left: 28rpx;
+  margin-bottom: 21rpx;
+  font-size: 20rpx;
+}
+.feedback .commit.data-v-aa8146c2 {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.feedback .commit .commit-btn.data-v-aa8146c2 {
+  border-radius: 34rpx;
+  width: 400rpx;
+  height: 68rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(#FF9933, #FF6633);
+  color: #ffffff;
+  font-size: 32rpx;
+}
+

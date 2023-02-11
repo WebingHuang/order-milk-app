@@ -1,0 +1,62 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/vehicle/index",
+    "pages/my/index",
+    "pages/company/index",
+    "pages/card/index",
+    "pages/commodity/index",
+    "pages/commodity/info",
+    "pages/agent/index",
+    "pages/collection/index",
+    "pages/footprint/index",
+    "pages/balance/index",
+    "pages/address/index",
+    "pages/capital/index",
+    "pages/address/edit",
+    "pages/capital/card",
+    "pages/capital/addcard",
+    "pages/capital/message",
+    "pages/order/index",
+    "pages/capital/Withdrawal",
+    "pages/my/sales",
+    "pages/my/refund",
+    "pages/my/feedback",
+    "pages/order/paid",
+    "pages/my/team",
+    "pages/my/usedCard",
+    "pages/my/PresentedCard",
+    "pages/login/index",
+    "pages/order/refund",
+    "pages/order/logistics",
+    "pages/my/postSales",
+    "pages/my/torefund",
+    "pages/my/return",
+    "pages/my/change",
+    "pages/my/browse",
+    "pages/order/refundPage",
+    "pages/order/refundDetail",
+    "pages/order/WaitReceivingDetail",
+    "pages/order/topaid",
+    "pages/order/confirmOrder",
+    "pages/my/unusedCard",
+    "pages/notice/index",
+    "pages/notice/info",
+    "pages/capital/rotation",
+    "pages/qrcode/index",
+    "pages/order/unsentDetail"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uView",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#FFFFFF"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "获取用户基本信息"
+    }
+  },
+  "usingComponents": {}
+}

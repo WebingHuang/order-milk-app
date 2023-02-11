@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "二维码扫码",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-swiper": "/uview-ui/components/u-swiper/u-swiper",
+    "u-popup": "/uview-ui/components/u-popup/u-popup",
+    "u-number-box": "/uview-ui/components/u-number-box/u-number-box",
+    "u-cell-group": "/uview-ui/components/u-cell-group/u-cell-group",
+    "u-cell-item": "/uview-ui/components/u-cell-item/u-cell-item",
+    "u-parse": "/uview-ui/components/u-parse/u-parse",
+    "phone-modal": "/components/phone-modal/phone-modal"
+  }
+}

@@ -1,0 +1,1735 @@
+<template>
+	<view id="topaid" alwaysScrollableVertical="false" :style="{height:Height}" style="overflow-y:auto">
+		<!-- <template>
+			<view>
+				<u-navbar  height="44"   title="待付款" :background="none"  :border-bottom="false" title-color="#FFFFFF" ></u-navbar>
+			</view>
+		</template> -->
+		
+		<view class="note-modal" v-if="showNote">
+			<view class="note-box">
+				<view class="title">
+					<span>订单备注</span>
+					<u-icon class="colse-icon" name="close" @click="showNote=!showNote"></u-icon>
+				</view>
+				<view class="content">
+					<textarea v-model="notes" count autoHeight maxlength="200" placeholder="选填,请选和商家协商一致,付款后商家可见" />
+				</view>
+				<view class="white">
+					<u-button class="ok-btn" :hairline="true" color="linear-gradient(to right, rgb(220, 194, 11), rgb(4, 151, 99))" @click="confirmOk">确定</u-button>
+				</view>
+			</view>
+		</view>
+		<view class="list" overflow-y="auto" v-if="loding">
+
+			<view class="item" v-for="item in addressList" :key="item.id" @click="handerAddress">
+				<!-- 头部 -->
+				<view class="top">
+					<view class="lfte">
+						<text class="defalt">默认</text> 
+						{{item.schoolName}}{{item.className}}
+						<!-- {{item.provincesCode}} {{item.cityCode}} {{item.areaCode}} -->
+					</view>
+
+				</view>
+				<!-- 中间 -->
+				<view class="text">
+					<view class="lfte">
+						<!-- {{item.address}} -->
+						{{item.studentName}}
+					</view>
+					<view class="right">
+						<image src="http://120.78.163.4:8082/index/dj.png" mode=""></image>
+					</view>
+				</view>
+				<!-- 底部 -->
+				<view class="lower">
+					<view class="lfte">
+						<text> {{item.parentsMobile}}</text>
+					</view>
+				</view>
+			</view>
+			<!-- 中间部分 -->
+
+			<view class="wrap">
+				<view class="list-item" v-for="(item,index) in list" :key="index">
+					<view class="list-top">
+						<view class="list-top-left">
+							<image :src="item.skuInfo.skuDefaultImg" mode=""></image>
+						</view>
+						<view class="list-top-right">
+							<view class="title">
+								{{item.spuInfo.spuName}}
+							</view>
+							<view class="specification">
+								<text>{{item.skuInfo.skuName}}</text>
+								<text>x{{item.skuInfo.commNum}}</text>
+							</view>
+							<view class="list-price">
+								<view class="info">
+									<!-- 7天无理由退货 -->
+								</view>
+								<view class="price">
+									¥{{item.skuInfo.price}}
+								</view>
+							</view>
+						</view>
+					</view>
+					<!-- <view class="list-top">
+						<text class="defalt">赠</text> 
+						<view class="list-top-left">
+							<image :src="item.skuInfo.skuDefaultImg" mode=""></image>
+						</view>
+						<view class="list-top-right">
+							<view class="title">
+								{{item.spuInfo.spuName}}
+							</view>
+							<view class="specification">
+								<text>{{item.skuInfo.skuName}}</text>
+								<text>x{{item.skuInfo.rpresenterNum}}</text>
+							</view>
+							<view class="list-price">
+								<view class="info">
+									7天无理由退货
+								</view>
+								<view class="price">
+									¥0
+								</view>
+							</view>
+						</view>
+					</view> -->
+					<view class="list-bottom">
+					<!-- 	<view class="distribution">
+							<view class="distributionWay">
+								配送方式
+							</view>
+							<view class="celerityDistribution">
+								<text>快递配送</text>
+								<image src="http://120.78.163.4:8082/index/dj.png" mode=""></image>
+							</view>
+						</view> -->
+
+						
+						<!-- <view class="message">
+							<view class="messageBoard">
+								买家留言
+							</view>
+							<view class="suggest">
+								<input class="uni-input" v-model="item.note" @blur="handerSuggest(item)"
+									placeholder="建议留言前先与商家沟通确认" />
+								<image src="http://120.78.163.4:8082/index/dj.png" mode=""></image>
+							</view>
+						</view> -->
+						<view class="discount">
+							<view class="lfte">
+								<view class="goodsCode"  v-if="!item.skuInfo.isR">
+									<view class="code">
+										臻香卡编号
+									</view>
+									<view class="codeHint">
+										<input class="uni-input" v-model="item.encode"  @blur="handerCode(item)"
+											placeholder="请输入有效的臻香卡编号" />
+										<!-- <image src="http://120.78.163.4:8082/index/dj.png" mode=""></image> -->
+									</view>
+								</view>
+								<!-- <view class="goodsCode" v-if="!item.skuInfo.isR">
+									<view class="code">
+										提货码
+									</view>
+									<view class="codeHint">
+										<input class="uni-input" v-model="item.cardCode"  @blur="handerCode(item)"
+											placeholder="请输入有效的提货码" />
+										<image src="http://120.78.163.4:8082/index/dj.png" mode=""></image>
+									</view>
+								</view> -->
+							</view>
+							
+							<view class="right" v-if="!item.skuInfo.isR">
+								<button open-type="primary" @click="scanCode(item,index)"
+									:plain="true">
+									<image lazy-load="true" src="http://120.78.163.4:8082/commodity/sao.png" mode=""></image><strong></strong>
+								</button>
+							</view>
+							
+						</view>
+						
+					</view>
+				</view>
+			</view>
+
+			<view class="cards">
+				<u-cell-group class="card">
+					<u-cell-item title="配送方式" value="商家自配"></u-cell-item>
+					<u-cell-item title="订单备注"  @click="showNote=true">{{notesText}}</u-cell-item>
+					<!-- <u-cell-item title="配送方式" @click="receiving = true">{{receivingName}}</u-cell-item> -->
+					<!-- <u-cell-item title="备注" v-if="receivingName !=='自提'">新疆、西藏、港澳台及海外地区不包邮</u-cell-item>
+					<u-cell-item title="商品总额">￥{{ TotalPrice }}</u-cell-item>
+					<u-cell-item title="运费">￥0.00</u-cell-item> -->
+				</u-cell-group>
+			</view>
+
+
+		</view>
+		<!-- 底部按钮 -->
+		<template>
+			<view v-if="!showNote" class="bottom-view" :style="{'margin-bottom': paddingBottomHeight + 'rpx'}">
+				<view class="total">
+					共{{ list.length }}件,合计:<text>￥{{ TotalPrice }}</text>
+				</view>
+				<!-- <button class="bottom-btn-right" type="default" @click="confirm" :disabled="isok">提交</button> -->
+				<button class="bottom-btn-right" type="default" @click.stop="openPay" :disabled="isok">提交</button>
+			</view>
+		</template>
+		
+		<template>
+			<view>
+				<u-popup v-model="show" mode="bottom " :closeable="true" :mask-close-able="false" @close="closePay">
+						<view class="content">
+							<scroll-view scroll-y="true" style="height: 600rpx;">
+								<view class="">
+									<view class="top">
+										请选择支付方式
+									</view>
+									<view class="text">
+										¥{{TotalPrice}}
+									</view>
+									
+									<view class="list">
+										<!-- <view class="item" @click="clickPayType(1)">
+											<view class="lfte">
+												<image src="http://120.78.163.4:8082/commodity/ye.png" mode=""></image>
+												<view class="text">
+													<view class="title">
+														余额支付
+													</view>
+													<view class="msg">
+														您的余额还有
+														<text class="money">{{userMoney}}</text>
+														元
+													</view>
+												</view>
+											</view>
+											<view class="right">
+												
+												<image :src="payMethod==1? 'http://120.78.163.4:8082/commodity/suo.png' : 'http://120.78.163.4:8082/commodity/suo2.png'" mode=""></image>
+											</view>
+										</view>
+										 -->
+										<view class="item" @click="clickPayType(2)">
+											<view class="lfte">
+												<image src="http://120.78.163.4:8082/commodity/wx.png" mode=""></image>
+												<view class="text">
+													<view class="title">
+														微信支付
+													</view>
+													<view class="msg">
+														<!-- 您的余额还有107.5元 -->
+													</view>
+												</view>
+											</view>
+											<view class="right">
+												<image :src="payMethod==2? 'http://120.78.163.4:8082/commodity/suo.png' : 'http://120.78.163.4:8082/commodity/suo2.png'" mode=""></image>
+											</view>
+										</view>
+										<view class="item" @click="clickPayType(3)">
+											<view class="lfte">
+												<image src="http://120.78.163.4:8082/commodity/ye.png" mode=""></image>
+												<view class="text">
+													<view class="title">
+														先送后付
+													</view>
+												</view>
+											</view>
+											<view class="right">
+												
+												<image :src="payMethod==3? 'http://120.78.163.4:8082/commodity/suo.png' : 'http://120.78.163.4:8082/commodity/suo2.png'" mode=""></image>
+											</view>
+										</view>
+											
+										<view v-if="userInfo.isPayMonthly==1" class="item" @click="clickPayType(0)">
+											<view class="lfte">
+												<image src="http://120.78.163.4:8082/commodity/yue.png" mode=""></image>
+												<view class="text">
+													<view class="title">
+														月付
+													</view>
+												</view>
+											</view>
+											<view class="right">
+												
+												<image :src="payMethod==0? 'http://120.78.163.4:8082/commodity/suo.png' : 'http://120.78.163.4:8082/commodity/suo2.png'" mode=""></image>
+											</view>
+										</view>
+										
+										<!-- <view class="pay-ways">
+											<view v-for="(js,key) in payWays" :key="key" :class="['radio-btn', way==key&&'selected']" @click="selectedPayWay(key)">
+												{{js}}
+											</view>
+										</view> -->
+										
+									</view>
+								</view>
+							</scroll-view>
+							<view class="confrim-btn">
+								<button  @click="confirm"  :disabled="isok" >立即支付 </button>
+							</view>
+						</view>				
+				</u-popup>
+			</view>
+		</template>
+		
+		<template>
+			<view>
+				<u-picker mode="selector" v-model="receiving"  :default-selector="receivingIndex" :range="receivingList" range-key="name" @confirm="receivingOk"></u-picker>
+			</view>
+		</template>
+	</view>
+</template>
+
+<script>
+	import _ from "lodash"
+	export default {
+		data() {
+			return {
+				way: -1,
+				payWays: ['月付', '先送后付'],
+				notes: '',
+				notesText: '',
+				showNote: false,
+				receivingIndex:[0],
+				receiving:false, //收货方式
+				receivingName:"快递配送",
+				receivingList:[{
+					id:1,
+					name:"快递配送"
+				},{
+					id:2,
+					name:"自提"
+				}],//收货方式
+				show:false, //支付弹窗
+				payMethod:2, //1 默认是余额支付  2 . 余额支付
+				isok:false,
+				loding:false,
+				Height: "810",
+				num: 0, //数量
+				state:true, //订单状态
+				supId:[], //商品Id集合
+				
+				skuId:[], //规格Id集合
+				
+				
+				TotalPrice:0,//商品总价
+				
+				price: 0, 
+				
+				background: "none",
+				list: [], 
+				
+				commodityList:[{
+					supId:"",//商品id
+					skuId:"",//规格id
+					num:"",//数量
+				}],
+				userMoney:0, //用户余额
+				
+				supList:[], //商品数组
+				
+				skuList:[], //规格数组
+				
+				addressList: [], //地址
+				
+				goodsList: [], //商品列表
+				note: '', //留言
+				cardCode: '', //提货码
+				userName: '', //用户名称
+				paddingBottomHeight: 0,  //苹果X以上手机底部适配高度
+				userInfo:{}, //用户信息
+				orderSn:"", //订单编号
+				batchId:"", //订单批次号
+			};
+		},
+		onLoad(option) {
+			this.getAppHeight();
+			this.batchId = option.batchId;
+			this.orderSn = option.orderSn;
+			this.goodsList = [];
+			console.log('option', option.supId);
+			if(option.supId.indexOf(',') != -1){
+				this.supId = option.supId.split(',');
+			}else{
+				this.supId = option.supId
+			}
+			
+			if(option.skuId.indexOf(',') != -1){
+				this.skuId = option.skuId.split(',');
+			}else{
+				this.skuId = option.skuId;
+			}
+			
+			if(option.num.indexOf(',') != -1){
+				this.num = option.num.split(',');
+			}else{
+				this.num = option.num;
+			}
+			
+			
+			this.commodityList = [];
+			
+			if(Array.isArray(this.supId)){
+				for(var i = 0; i<this.supId.length;i++){
+					this.commodityList.push({
+						supId:this.supId[i],//商品id
+						skuId:this.skuId[i],//规格id
+						num:this.num[i],//数量
+					})
+				}
+			}else{
+				this.commodityList.push({
+					supId:this.supId,//商品id
+					skuId:this.skuId,//规格id
+					num:this.num,//数量
+				})
+			}
+			
+			this.userName = uni.getStorageSync('nickName');
+			
+			//获取手机号等信息
+			this.getPhoneInfo(); 
+			
+			
+			this.getOpenInfo();
+			
+			
+			if(this.batchId){
+				
+				this.getOrderList();
+			}
+			
+			
+			
+		
+		},
+		watch: {
+			deep: true
+		},
+		methods: {
+			selectedPayWay(key) {
+				if(this.way == key) {
+					this.way = -1
+				} else {
+					this.way = key
+				}
+			},
+			confirmOk() {
+				this.notesText = this.notes;
+				this.showNote = !this.showNote;
+			},
+			//点击选择按钮
+			receivingOk(val){
+				
+				// val 是下标
+				this.receivingIndex = [val];
+				
+				this.receivingName = this.receivingList[val].name;
+				
+				if(val == 1){
+					this.list.map(item=>{
+						item['note'] = this.receivingName;
+					})
+				}else{
+					//快递配送
+					this.list.map(item=>{
+						if(item.note == '自提'){
+							item.note = "";
+						}
+					})
+				}
+			
+			},
+			
+			getParam(name,url) {
+			    try {
+			        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			        var r = url.split('?')[1].match(reg);
+			        if(r != null) {
+			          return r[2];
+			        }
+			        return "";//如果此处只写return;则返回的是undefined
+			    } catch(e) {
+			        return "";//如果此处只写return;则返回的是undefined
+			    }
+			},
+			
+			scanCode(item,index){
+				// console.log(this.list)
+				var _this = this;
+				// console.log(item)
+				// console.log(index)
+				uni.scanCode({
+					success: function (res) {
+						// console.log('条码类型：' + res.scanType);
+						
+						let qrString = res.result;
+						
+						if(qrString.indexOf("https") != -1){
+							//判断是否包含https
+							//获取url上的encode
+							let encode = _this.getParam('encode',qrString);
+							
+							if(encode){
+								_this.getSecretKey(encode,item,index)
+							}
+							
+						}else{
+							//处理之前的二维码
+							_this.getSecretKey(qrString,item,index)
+						}
+						
+					}
+				});
+			},
+			//获取密钥
+			getSecretKey(encode,item,index){
+				this.$u.api.getSecretKey({
+					encode:encode
+				})
+				.then(res => {
+					this.list[index]['encode'] = res.encode;
+					this.list[index]['cardCode'] =res.cdkey;
+					this.handerCode(item); //验证提货码有效性
+					
+					let data = {
+						spuId:this.list[index].spuInfo.id,
+						spuType:this.list[index].spuInfo.spuType,
+					}
+					this.getCardCodeByUserId(data);
+					
+				}).catch((err) => {
+				
+				})
+				
+				
+				
+			},
+			
+			
+			getOrderList() {
+				this.list=[];
+				this.$u.api.queryOrder({
+					batchId:this.batchId
+				}).then(res => {
+					
+					let data = res[0]; //获取第一条数据
+					data.omsOrderItemEntityList.map(item=>{
+						this.list.push({
+							skuInfo:{
+								skuDefaultImg:item.skuPic, //商品规格图片
+								skuName:item.skuName, //商品规格名称
+								commNum:item.skuQuantity, //规格数量
+								price:item.realAmount,//商品规格价格
+								isR:true, //不显示提货卡输入框
+							},
+							spuInfo:{
+								spuName:item.spuName,
+							},
+							encode:item.encode,//提货卡编号
+							cardCode:item.cardCode,//提货码
+							note:item.note //买家留言
+						})
+						
+					});
+					
+					
+					// 订单状态【0->待付款；1->待送货；2->已发货；3->已完成；4->已关闭；5->无效订单;6->已退款】
+					
+					if(data.orderStatus == 0){
+						this.state = true;
+					}else{
+						this.state = false;
+					}
+					this.TotalPrice = data.payAmount; //实际支付金额
+					this.loding = true;
+					
+					
+				}).catch()
+			},
+			
+			getOpenInfo(){
+				
+				this.$u.api.getOpenInfo()
+				.then(res => {
+					this.userInfo = res;
+					
+					if(!this.userName){
+						this.userName = this.userInfo.userName
+					}
+					
+					//查询数据
+					if(!this.batchId){
+						this.getList();
+					}
+					
+				}).catch((err) => {
+				
+				})
+				
+			},
+			
+			
+			//根据商品Id查询商品详情
+			getCommodityDetails(obj){
+				
+				this.$u.api.getCommodityDetails({
+					spuId:obj.supId,
+				}).then(res => {
+					//添加商品
+					var List = res.productSkuInfoEntities;
+					for(var i = 0; i <List.length;i++){
+						// 图片设置
+						if(!List[i].skuDefaultImg) {
+							List[i].skuDefaultImg = res.imgUrl;
+						}
+						if(res.isCard == 1 ){ //如果是臻香卡就隐藏选项
+							List[i]['isR'] = true;
+						}else{
+							List[i]['isR'] = false;
+						}
+						if(obj.skuId == List[i].id){ //如果当前规格id和里面找的相同01
+							
+							if(List[i].coupon == 0 || List[i].coupon == '' || List[i].coupon== null || List[i].coupon== 'null'){
+								List[i]['isR'] = true;
+							}else{
+								List[i]['isR'] = false;
+							}
+							List[i]['rpresenterNum']= parseInt((obj.num/List[i].buyEnoughNum)*List[i].presenterNum);
+							
+							//（购买数量/买满数量） * 赠送数量 = 实际赠送数量
+							//添加购买数量
+							List[i]['commNum'] = obj.num;
+							List[i]['price'] = List[i]['price'] * obj.num;
+							//默认添加没有验证通过的臻香卡
+							List[i]['adopt'] = false;
+
+							this.list.push({
+								spuInfo:res,
+								skuInfo:List[i]
+							})
+							
+							this.getCardCodeByUserId(List[i]);
+							break;
+						}
+						
+					}
+					
+					
+					let str = uni.getStorageSync('couponCard');
+					
+					
+					if(str){
+					 //说明是扫自定义二维码进入小程序的
+					 let obj = JSON.parse(str);
+					 
+					 for (var j = 0; j < this.list.length; j++) {
+						
+						if(this.list[j].skuInfo.spuId == obj.spuId){
+							//判断二维码内容可以进入商品，调用接口进行验证是否需要
+							
+							let data = {
+								spuId:this.list[j].spuInfo.id,
+								spuType:this.list[j].spuInfo.spuType,
+								index:j,
+								encode:obj.encode,
+								item:this.list[j]
+							}
+							
+							this.getCardCodeByUserId(data);
+							break;
+						}
+					 }
+					 
+					}
+					
+					
+				}).catch(err => {
+				
+				})
+				
+			},
+			
+			//处理已经选中的订单信息
+			getList(){
+				
+				this.commodityList.map(item=>{
+					//查询商品
+					this.getCommodityDetails(item);
+				
+				})
+				
+			},
+			
+			
+			//根据商品类型查询对应的用户的提货卡
+			getCardCodeByUserId(obj){
+				
+				
+				
+				
+				this.$u.api.getCardCodeByUserId({
+					spuId:obj.spuId,
+					type:obj.spuType,
+				}).then(res => {
+						if(res.length>0){
+							for(var i = 0; i < this.list.length;i++){
+								this.list[i].skuInfo['isR'] = true;
+								this.list[i].skuInfo.adopt = false;
+								this.list[i]['cardCode'] = '';
+								this.list[i]['encode'] = '';
+								uni.removeStorageSync('couponCard'); //删除二维码缓存
+							}
+						}else{
+							if(obj.item){
+								
+								this.getSecretKey(obj.encode,obj.item,obj.index);
+							}
+						}
+						
+						this.getTotalMoney();
+				
+				}).catch(err => {
+					
+					
+					
+					this.getTotalMoney();
+					
+					uni.showToast({
+						title: err.msg
+					})
+				})
+				
+			},
+			
+			getTotalMoney(){
+				
+				//判断是不是会员
+				// d2fe397f-2d95-4532-a1eb-74efbe242660  会员唯一键
+				this.TotalPrice = 0;
+				
+				if(this.userInfo.roleCode.includes('d2fe397f-2d95-4532-a1eb-74efbe242660')){
+					this.list.map(item=>{
+						if(item.skuInfo.adopt){
+							this.TotalPrice +=  Number(item.skuInfo.commNum) * (Number(item.skuInfo.price)-Number(item.skuInfo.coupon));
+						}else{
+							this.TotalPrice += Number(item.skuInfo.commNum) * (Number(item.skuInfo.price)-Number(item.skuInfo.vipAmount));
+						}
+					})
+					
+				}else{
+					this.list.map(item=>{
+						this.TotalPrice += Number(item.skuInfo.price);
+						// if(item.skuInfo.adopt){
+						// 	this.TotalPrice +=  Number(item.skuInfo.commNum) * (Number(item.skuInfo.price)-Number(item.skuInfo.coupon));
+						// }else{
+						// 	this.TotalPrice += Number(item.skuInfo.commNum) * Number(item.skuInfo.price);
+						// }
+					})
+					
+				}
+				
+				this.TotalPrice = this.TotalPrice.toFixed(2);
+				
+				this.loding = true;
+			}, 
+			getPhoneInfo(){
+				var that = this
+				uni.getSystemInfo({
+					success(res) {
+						let model = ['X', 'XR', 'XS', '11', '12'];
+						model.forEach(item => {
+							//适配iphoneX以上的底部，给tabbar一定高度的padding-bottom
+							if (res.model.indexOf(item) != -1 && res.model.indexOf('iPhone') != -1) {
+								that.paddingBottomHeight = 40;
+							}
+						})
+					}
+				})
+			},
+			
+			
+			handerCode(item) {
+				var _this = this;
+				if(item.encode && item.cardCode){
+					_this.$u.api.queryByCardCode({
+						cardCode: item.cardCode,
+						encode:item.encode,
+						skuId: item.skuInfo.id
+					}).then(res => {
+						item.skuInfo.adopt = true;
+						uni.showToast({
+							title: '有效提货码'
+						})
+					
+						_this.getTotalMoney();
+						
+					}).catch(err => {
+						item.skuInfo.adopt = false;
+						_this.getTotalMoney();
+						
+						uni.showToast({
+							title: err.msg,
+							icon:'none',
+							duration: 2000,
+						})
+					})
+					
+				}else{
+					// uni.showToast({
+					// 	title:'请输入臻香卡编号或提货码'
+					// })
+					// item['cardCode'] = '';
+					item.skuInfo.adopt = false;
+					_this.getTotalMoney();
+				}
+				
+			},
+			handerSuggest(item) {
+			
+				this.list.forEach(v => {
+					this.list.filter(val => {
+						if(val.id){
+							if (val.id === item.id) {
+								if (item.note) {
+									v.note = item.note
+								}
+							}
+						}
+					})
+				})
+			},
+			handerAddress() {
+				
+				if(this.state){
+					uni.navigateTo({
+						url: '/pages/address/index'
+					})
+				}
+			},
+			getDefaultAddress() {
+				this.addressList = [];
+				this.$u.api.queryUserInformation({
+					sequence: '1'
+				}).then(res => {
+					if(res.length){
+						let defaultAddr = res.find(e => e.sequence == '1');
+						if (defaultAddr) {
+							this.addressList.push(defaultAddr)
+						} else {
+							this.handerAddress();
+						}
+					}else{
+						this.handerAddress();
+					}
+				}).catch()
+			},
+			getAppHeight() {
+				this.Height = uni.getSystemInfoSync().windowHeight + 'px';
+			},
+			
+			
+			// 切换支付方式
+			clickPayType(val){
+				// val  1 是余额支付 2是微信支付
+				this.payMethod = val;
+			},
+			
+			//关闭弹窗跳转到待支付页面
+			closePay(){
+			
+				uni.redirectTo({
+					url:'/pages/order/index?current=' + '待付款' + '&orderStatus=' + 0
+				})
+				
+			},
+			// 选择支付方式
+			openPay:_.debounce(function() {
+				if(!this.$requiredLogin()){
+					return
+				}
+				this.addressList = [];
+				this.$u.api.queryUserInformation({
+					sequence: '1'
+				})
+				.then(res => {
+					if(res.length){
+						let defaultAddr = res.find(e => e.sequence == '1');
+						if (defaultAddr) {
+							this.addressList.push(defaultAddr);
+							this.addOrder();
+						} else {
+							this.handerAddress();
+						}
+					} else{
+						this.handerAddress();
+					}
+				}).catch()
+				
+			 }, 1000, {
+				 'leading': true, //在延迟开始前立即调用事件
+				 'trailing': false, //在延时结束后不调用,保证事件只被触发一次
+			}),
+			//生成订单
+			addOrder(){
+				var _this = this;
+				_this.isok = true;
+				_this.goodsList = [];
+				
+				
+				for (let i = 0; i < _this.list.length; i++) {
+					_this.goodsList.push({
+						"encode": _this.list[i].encode ? _this.list[i].encode : '',  //臻香卡编号
+						"cardCode": _this.list[i].cardCode ? _this.list[i].cardCode : '',  //臻香卡提货码
+						'isCard':_this.list[i].spuInfo.isCard, //商品是否为会员卡 
+						"deleteFlag": _this.list[i].skuInfo.deleteFlag,  //删除表示
+						"note": _this.list[i].note, //订单备注
+						"skuId":_this.list[i].skuInfo.id, //规格id
+						"skuName": _this.list[i].skuInfo.skuName, // 规格名称
+						"spuType":_this.list[i].skuInfo.spuType, //商品类型
+						"skuPic": _this.list[i].skuInfo.skuDefaultImg ? _this.list[i].skuInfo.skuDefaultImg : _this.list[i].spuInfo.imgUrl, //规格图片
+						"skuPrice": _this.list[i].skuInfo.price, //规格单价
+						"skuQuantity": Number(_this.list[i].skuInfo.commNum),  //购买数量
+						"spuId": _this.list[i].spuInfo.id, //商品id
+						"spuName": _this.list[i].spuInfo.spuName, //商品名称
+						// "shopStatus": _this.list[i].shopStatus ? _this.list[i].shopStatus : '0' //是否在购物车购买 0否 ：1是
+					})
+				}
+				console.log(_this.goodsList)
+				_this.$u.api.addOrder(
+				[{
+					"orderSn":_this.orderSn ? _this.orderSn : "",
+					"omsOrderItemEntityList": _this.goodsList,
+					// "receiverCity": _this.addressList[0].cityCode,
+					// "receiverDetailAddress": _this.addressList[0].address,
+					// "receiverName": _this.addressList[0].receivingName,
+					// "receiverPhone": _this.addressList[0].receivingMobile,
+					// "receiverProvince": _this.addressList[0].provincesCode,
+					// "receiverRegion": _this.addressList[0].areaCode,
+					"userName": _this.userName,
+					studentName:_this.addressList[0].studentName,
+					parentsMobile:_this.addressList[0].parentsMobile,
+					schoolName:_this.addressList[0].schoolName,
+					className:_this.addressList[0].className,
+					note: _this.notesText,
+				}]
+				).then(res => {
+					_this.batchId =  res.batchId;// 返回系统订单批次号
+					uni.removeStorageSync('couponCard'); //删除二维码缓存
+					_this.$u.api.getUserMoney()
+					.then(res => {
+						_this.userMoney = res;
+						_this.show = true;
+						_this.isok = false;
+					})
+					.catch(err=>{
+						_this.show = true;
+						_this.isok = false;
+					})
+				})
+				.catch(err=>{
+					_this.isok = false;
+					uni.showToast({
+						title: err.data.message,
+						icon:'none',
+						duration: 2000,
+					})	
+				})
+				
+			},
+			confirm:_.debounce(function() {
+				var _this = this;
+				_this.isok = true;
+				if (_this.payMethod == 0) {
+					// 月付 payMonthly
+					_this.$u.api.payMonthly({
+						batchId:_this.batchId
+					}).then(res1=>{
+						
+						
+						_this.isok = false;
+						//这里写支付的回调函数
+						
+						uni.redirectTo({
+							url:'/pages/order/index?current=' + '待送货' + '&orderStatus=' + 1
+						})			
+						
+					}).catch(err=>{
+						_this.isok = false;
+						// console.log(err)
+						uni.showToast({
+							icon:"none",
+							title:err.data.message
+						})
+						
+					})
+				} else if(_this.payMethod == 1){
+					//余额支付
+					_this.$u.api.getPaySignTwo({
+						batchId:_this.batchId
+					}).then(res1=>{
+						
+						
+						_this.isok = false;
+						//这里写支付的回调函数
+						
+						uni.redirectTo({
+							url:'/pages/order/index?current=' + '待送货' + '&orderStatus=' + 1
+						})			
+						
+					}).catch(err=>{
+						_this.isok = false;
+						// console.log(err)
+						uni.showToast({
+							icon:"none",
+							title:err.data.message
+						})
+						
+					})
+					
+				}else if (_this.payMethod == 2){
+					//微信支付
+					_this.$u.api.getPaySign({
+						batchId:_this.batchId
+					}).then(res1=>{
+						
+						wx.requestPayment
+						(
+							{
+								"timeStamp": res1.timeStamp, //时间戳
+								"nonceStr":  res1.nonce_str, //随机数
+								"package": "prepay_id="+res1.prepay_id,
+								"signType": "MD5",
+								"paySign": res1.paySign,
+								"success":function(res2){
+									// console.log("支付成功回调")
+									// console.log(res2.errMsg)
+									if(res2.errMsg == 'requestPayment:ok'){
+											_this.$u.api.sendPay({
+												batchId:_this.batchId
+											}).then(prepay=>{											
+													_this.isok = false;
+													uni.redirectTo({
+														url: '/pages/order/index?current=' + '待送货' + '&orderStatus=' + 1
+													});
+											})
+									}
+								},
+								"fail":function(res3){
+									uni.redirectTo({
+										url:'/pages/order/index?current=' + '待付款' + '&orderStatus=' + 0
+									})
+										
+								},
+								"complete":function(res4){
+									// console.log(res4)
+									// console.log("微信支付")
+									
+								}
+							}
+						)
+					}).catch(err=>{
+						_this.isok = false;
+					})
+				} else if (_this.payMethod == 3) {
+					// 先送后付 beforePaying
+					_this.$u.api.beforePaying({
+						batchId:_this.batchId
+					}).then(res1=>{
+						
+						
+						_this.isok = false;
+						//这里写支付的回调函数
+						
+						uni.redirectTo({
+							url:'/pages/order/index?current=' + '待送货' + '&orderStatus=' + 1
+						})			
+						
+					}).catch(err=>{
+						_this.isok = false;
+						// console.log(err)
+						uni.showToast({
+							icon:"none",
+							title:err.data.message
+						})
+						
+					})
+				}
+			 }, 1000, {
+				 'leading': true, //在延迟开始前立即调用事件
+				 'trailing': false, //在延时结束后不调用,保证事件只被触发一次
+			}),
+			
+			
+		},
+		onShow() {
+			this.getDefaultAddress();	
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	#topaid {
+		background: url(http://120.78.163.4:8082/my/bj.png) no-repeat;
+		background-size: contain;
+		background-color: #F0F0F0;
+
+		&>.list {
+
+			margin: 0 21rpx;
+			padding-top: 22rpx;
+			overflow-y: auto;
+			padding-bottom: 140rpx;
+
+			.item {
+				margin-top: 56rpx;
+				padding: 0 20rpx;
+				padding-bottom: 20rpx;
+				background-color: #FFFFFF;
+				border-radius: 28rpx;
+				padding-bottom: 9.5rpx;
+				flex-direction: column;
+				margin-bottom: 20rpx;
+
+				.top {
+
+					display: flex;
+					justify-content: space-between;
+					flex-wrap: nowrap;
+
+					&>.lfte {
+						color: #1A1A1A;
+						font-size: 28rpx;
+						font-weight: bold;
+						padding-top: 32rpx;
+						padding-bottom: 30rpx;
+
+						.defalt {
+							color: #FFFFFF;
+							background-color: $u-main-color;
+							border-radius: 4rpx;
+							padding: 0 5px;
+							margin-right: 10px;
+
+						}
+					}
+
+					&>.right {
+						color: #1A1A1A;
+						font-size: 28rpx;
+						font-weight: bold;
+						padding-top: 32rpx;
+						padding-bottom: 30rpx;
+					}
+				}
+
+				.text {
+					display: flex;
+					justify-content: space-between;
+
+					&>.lfte {
+						color: #1A1A1A;
+						font-size: 28rpx;
+						font-weight: bold;
+					}
+
+					&>.right {
+						image {
+							width: 12rpx;
+							height: 24rpx;
+							margin-left: 20rpx;
+						}
+					}
+				}
+
+				.lower {
+					display: flex;
+					justify-content: space-between;
+					padding-top: 33rpx;
+
+					&>.lfte {
+						color: #1A1A1A;
+						font-size: 28rpx;
+						display: flex;
+						align-items: center;
+						font-weight: bold;
+
+						image {
+							width: 28rpx;
+							height: 28rpx;
+
+						}
+
+					}
+
+					&>.right {
+						font-size: 24rpx;
+						color: #808080;
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+						width: 209rpx;
+
+						&>.item {
+							display: flex;
+							align-items: center;
+							justify-content: space-between;
+							flex-direction: row;
+							padding: 0;
+						}
+
+						text {
+							margin-left: 12rpx;
+						}
+					}
+				}
+			}
+
+			// 中间部分
+			.wrap {
+				margin-bottom: 20rpx;
+
+				.list-item {
+					display: flex;
+					flex-direction: column;
+					background-color: #FFFFFF;
+					border-radius: 12rpx;
+					margin-bottom: 20rpx;
+
+					.list-top {
+						display: flex;
+						
+						.defalt {
+							    background: red;
+							    height: min-content;
+							    padding: 0 6rpx;
+							    color: white;
+							    border-radius: 5rpx;
+							    position: absolute;
+							    left: 37rpx;
+						}
+
+						.list-top-left {
+							padding: 20rpx 22rpx 20rpx 20rpx;
+
+							image {
+								width: 180rpx;
+								height: 180rpx;
+								border-radius: 12rpx;
+							}
+						}
+
+						.list-top-right {
+							flex: 1;
+
+							.title {
+								padding-top: 18rpx;
+								font-size: 28rpx;
+								font-family: Source Han Sans CN;
+								font-weight: bold;
+								color: #1A1A1A;
+							}
+
+							.specification {
+								display: flex;
+								justify-content: space-between;
+								padding-top: 17rpx;
+
+								text:nth-child(1) {
+									font-size: 24rpx;
+									font-family: Source Han Sans CN;
+									font-weight: 500;
+									color: #808080;
+								}
+
+								text:nth-child(2) {
+									font-size: 28rpx;
+									font-family: Source Han Sans CN;
+									font-weight: 500;
+									color: #1A1A1A;
+									padding-right: 19rpx;
+								}
+							}
+
+							.list-price {
+								display: flex;
+								justify-content: space-between;
+								padding-top: 47rpx;
+
+								.info {
+									width: 160rpx;
+									height: 32rpx;
+									// background: #FFF0E5;
+									border-radius: 4rpx;
+									font-size: 20rpx;
+									font-family: Source Han Sans CN;
+									font-weight: 500;
+									color: $u-main-color;
+									text-align: center;
+									line-height: 32rpx;
+								}
+
+								.price {
+									font-size: 32rpx;
+									font-family: Source Han Sans CN;
+									font-weight: 500;
+									color: $u-main-color;
+									padding-right: 19rpx;
+								}
+							}
+						}
+					}
+
+					.list-bottom {
+						padding-bottom: 24rpx;
+						.distribution {
+							display: flex;
+							justify-content: space-between;
+							padding-top: 26rpx;
+							padding-left: 20rpx;
+
+							.distributionWay {
+								font-size: 28rpx;
+								font-family: Source Han Sans CN;
+								color: #1A1A1A;
+								font-weight: bold;
+							}
+
+							.celerityDistribution {
+								padding-right: 20rpx;
+
+								text {
+									font-size: 28rpx;
+									font-family: Source Han Sans CN;
+									color: #1A1A1A;
+									font-weight: bold;
+								}
+
+								image {
+									width: 12rpx;
+									height: 24rpx;
+									padding-left: 20rpx;
+								}
+							}
+
+						}
+
+						.message {
+							display: flex;
+							justify-content: space-between;
+							padding-top: 53rpx;
+							padding-left: 20rpx;
+
+							.messageBoard {
+								font-size: 28rpx;
+								font-family: Source Han Sans CN;
+								color: #1A1A1A;
+								font-weight: bold;
+								display: flex;
+								align-items: center;
+							}
+
+							.suggest {
+								display: flex;
+								align-items: center;
+								padding-right: 20rpx;
+
+								image {
+									width: 12rpx;
+									height: 24rpx;
+									padding-left: 20rpx;
+								}
+							}
+						}
+						
+						.discount{
+							display: flex;
+							justify-content: space-between;
+							align-items: center;
+							padding-right: 20rpx;
+							.lfte{
+								width: 100%;
+							}
+							
+							.right{
+								width: 40rpx;
+								height: 40rpx;
+								button {
+								
+									border: none;
+									width: 40rpx;
+									height: 40rpx;
+									margin: 0;
+									display: flex;
+									padding: 0;
+								
+									image {
+										width: 40rpx;
+										height: 40rpx;
+									}
+								}
+							}
+							
+							
+							
+						}
+						.goodsCode {
+							display: flex;
+							justify-content: space-between;
+							padding-top: 53rpx;
+							padding-left: 19rpx;
+							padding-bottom: 27rpx;
+
+							.code {
+								font-size: 28rpx;
+								font-family: Source Han Sans CN;
+								color: #1A1A1A;
+								font-weight: bold;
+								display: flex;
+								align-items: center;
+							}
+
+							.codeHint {
+								display: flex;
+								align-items: center;
+								padding-right: 20rpx;
+
+								image {
+									width: 12rpx;
+									height: 24rpx;
+									padding-left: 20rpx;
+								}
+							}
+						}
+					}
+				}
+
+			}
+
+
+		}
+
+		.cards {
+			margin-top: 20rpx;
+			font-size: 28rpx;
+			border-radius: 12rpx;
+			color: #1A1A1A;
+			background-color: #F0F0F0;
+
+			.card {
+				u-cell-item:nth-child(1) {
+					.u-cell_title {
+						color: #1A1A1A !important;
+						font-weight: bold !important;
+					}
+				}
+
+				// 
+				u-cell-item:nth-child(2) {
+					.u-cell_title {
+						color: #1A1A1A !important;
+						font-weight: bold !important;
+					}
+				}
+
+				// 
+				u-cell-item:nth-child(3) {
+					.u-cell_title {
+						color: #1A1A1A !important;
+						font-weight: bold !important;
+					}
+				}
+
+				// 
+				u-cell-item:nth-child(1) {
+					.u-cell__value {
+						color: #1A1A1A !important;
+						font-weight: bold !important;
+					}
+				}
+
+				u-cell-item:nth-child(2) {
+					.u-cell__value {
+						color: #1A1A1A !important;
+						font-weight: bold !important;
+					}
+				}
+
+				u-cell-item:nth-child(3) {
+					.u-cell__value {
+						color: #1A1A1A !important;
+						font-weight: bold !important;
+					}
+				}
+			}
+
+			.dibu {
+				display: flex;
+				justify-content: flex-end;
+				margin-right: 21.5px;
+
+				.fukuan {
+					font-size: 28rpx;
+					color: #1A1A1A;
+					font-weight: bold;
+				}
+
+				.moneys {
+					color: $u-main-color;
+					font-size: 32rpx;
+
+					image {
+						width: 12rpx;
+						height: 24rpx;
+						margin-left: 7px;
+
+					}
+				}
+
+
+			}
+		}
+
+
+		.bottom-view {
+			width: 100%;
+			height: 98rpx;
+			background-color: #FFFFFF;
+			position: fixed;
+			bottom: 0rpx;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			z-index: 100;
+
+			.total {
+				width: 280rpx;
+				height: 28rpx;
+				font-size: 28rpx;
+				font-family: Source Han Sans CN;
+				font-weight: 500;
+				color: #4D4D4D;
+				display: flex;
+				align-items: center;
+
+				text {
+					color: $u-main-color;
+				}
+			}
+
+			.bottom-btn-left {
+				width: 128rpx;
+				height: 48rpx;
+				color: #4D4D4D;
+				border-radius: 8rpx;
+				font-size: 24rpx;
+				line-height: 24rpx;
+				text-align: center;
+				padding: 0rpx; //文字如果换行，注意清除内边距
+				border: 1rpx solid #4D4D4D;
+
+
+				position: absolute; //绝对定位是相对于最近的一个定位（fixed/realative）
+				bottom: 20rpx;
+				right: 188rpx;
+
+				box-sizing: border-box;
+				display: flex;
+				flex-wrap: nowrap;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.bottom-btn-right {
+				margin: 0;
+				margin-right: 20rpx;
+				width: 160rpx;
+				height: 60rpx;
+				color: #FFFFFF;
+				border-radius: 8rpx;
+				font-size: 24rpx;
+				text-align: center;
+				padding: 0rpx; //文字如果换行，注意清除内边距
+				background-color: $u-main-color;
+				box-sizing: border-box;
+				display: flex;
+				flex-wrap: nowrap;
+				justify-content: center;
+				align-items: center;
+			}
+
+		}
+		
+		.content{
+			.top{
+				font-size: 36rpx;
+				height: 100rpx;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				
+			}
+			.text{
+			
+				font-size: 46rpx;
+				font-weight: bold;
+				display: flex;
+				justify-content: center;
+				justify-items: center;
+			}
+			.list{
+				
+				.item{
+					height: 130rpx;
+					width: 100%;
+					display: flex;
+					align-items: center;
+					justify-content:space-between;
+					padding: 0 24rpx;
+					
+					.lfte{
+						display: flex;
+						align-items: center;
+						image{
+							width: 72rpx;
+							height: 72rpx;
+						}
+						
+						.text{
+							display: flex;
+							flex-direction: column;
+							margin-left: 27rpx;
+							.title{
+								font-size: 32rpx;
+								color: #1A1A1A;
+							}
+							.msg{
+								font-size: 24rpx;
+								font-weight: initial;
+								color: #9a9a9a;
+								&>.money{
+									color: #F97D1D;
+								}
+							}
+						}
+						
+					}
+					.right{
+						
+						image{
+							width: 44rpx;
+							height: 44rpx;
+						}
+					}
+				}
+			}
+			
+			.confrim-btn{
+				button{
+					background: #F97D1D;
+					color: #FFFFFF;
+					width: 100%;
+					border-radius: 0;
+				}
+			}
+			
+			
+		}
+
+	}
+	
+	.note-modal {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background-color: #b2b2b280;
+		z-index: 99;
+		
+		.note-box {
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			height: 70%;
+			background-color: transparent;
+			z-index: 100;
+			// left: 50%;
+			// transform: translateX(-50%);
+			.title {
+				color: black;
+				font-weight: 600;
+				padding: 1em;
+				text-align: center;
+				background-color: white;
+				font-size: 16px;
+				border-top-left-radius: 16px;
+				border-top-right-radius: 16px;
+				
+				.colse-icon {
+					float: right;
+					// padding-right: 2rem;
+				}
+			}
+		
+			.content {
+				// padding: 1em;
+				height: 70%;
+				margin: auto;
+				background-color: white;
+				textarea {
+					background-color: #f2f2f2;
+					width: calc(100% -2.2em);
+					border-radius: 8px;
+					min-height: 4rem;
+					padding: 1em;
+					color: black;
+					margin-left: 50%;
+					transform: translateX(-50%);
+				}
+			}
+			.white {
+				background-color: white;
+				width: 100%;
+				height: 100%;
+				.ok-btn {
+					position: fixed;
+					bottom: 1em;
+					color: white;
+					width: 80%;
+					left: 50%;
+					transform: translateX(-50%);
+					// background: #ff9159 !important;
+					
+					z-index: 100;
+				}
+			}
+		}
+		
+	}
+	.pay-ways {
+		padding: 0 1rem;
+		color: black;
+		font-size: 14px;
+		font-weight: 400;
+		.radio-btn {
+			border: 1px solid #efefef;
+			text-align: right;
+			padding: 4px 8px;
+			width: 6rem;
+			margin-bottom: 4px;
+		}
+		.selected {
+			border: 1px solid #ff5e00;
+			background-color: #ff00008c;
+			color: white;
+		}
+	}
+</style>

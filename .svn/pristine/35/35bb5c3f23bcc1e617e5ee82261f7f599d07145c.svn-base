@@ -1,0 +1,220 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+#paid {
+  background: url(http://120.78.163.4:8082/my/bj.png) no-repeat;
+  background-size: contain;
+  background-color: #F0F0F0;
+}
+#paid .list {
+  margin: 0 21rpx;
+  padding-top: 22rpx;
+}
+#paid .list .item {
+  padding: 0 32rpx;
+  padding-bottom: 20rpx;
+  background-color: #FFFFFF;
+  border-radius: 28rpx;
+  padding-bottom: 22rpx;
+  flex-direction: column;
+}
+#paid .list .item .top {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+#paid .list .item .top > .lfte {
+  color: #1A1A1A;
+  font-size: 28rpx;
+  font-weight: bold;
+  padding-top: 32rpx;
+  padding-bottom: 30rpx;
+}
+#paid .list .item .top > .lfte .defalt {
+  color: #FFFFFF;
+  background-color: #3e8bf3;
+  border-radius: 4rpx;
+}
+#paid .list .item .top > .right {
+  color: #1A1A1A;
+  font-size: 28rpx;
+  font-weight: bold;
+  padding-top: 32rpx;
+  padding-bottom: 30rpx;
+}
+#paid .list .item .text > .lfte {
+  color: #1A1A1A;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+#paid .list .item .lower {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 33rpx;
+}
+#paid .list .item .lower > .lfte {
+  color: #1A1A1A;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+#paid .list .item .lower > .lfte image {
+  width: 28rpx;
+  height: 28rpx;
+}
+#paid .list .item .lower > .right {
+  font-size: 24rpx;
+  color: #808080;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 209rpx;
+}
+#paid .list .item .lower > .right > .item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 0;
+}
+#paid .list .item .lower > .right text {
+  margin-left: 12rpx;
+}
+#paid .list > .top1 {
+  background-color: #FFFFFF;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 12rpx;
+  margin-top: 20rpx;
+}
+#paid .list > .top1 .lfte1 {
+  height: 180rpx;
+}
+#paid .list > .top1 .lfte1 image {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 12rpx;
+}
+#paid .list > .top1 .right1 {
+  width: 469rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+#paid .list > .top1 .right1 .title1 {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #1A1A1A;
+}
+#paid .list > .top1 .right1 .text1 {
+  display: flex;
+  justify-content: space-between;
+}
+#paid .list > .top1 .right1 .text1 .specs1 {
+  font-size: 24rpx;
+  color: #808080;
+}
+#paid .list > .top1 .right1 .text1 .num1 {
+  font-size: 28rpx;
+  color: #1A1A1A;
+}
+#paid .list > .top1 .right1 .msginfo1 {
+  display: flex;
+  justify-content: space-between;
+}
+#paid .list > .top1 .right1 .msginfo1 .msg1 {
+  color: #3e8bf3;
+  font-size: 20rpx;
+  background: #FFF0E5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12rpx;
+  width: 160rpx;
+  height: 32rpx;
+}
+#paid .list > .top1 .right1 .msginfo1 .money1 {
+  color: #3e8bf3;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+#paid .list > .botom1 {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+#paid .list > .botom1 .but1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #FF6633;
+  color: #FFFFFF;
+  font-size: 24rpx;
+  width: 128rpx;
+  height: 48rpx;
+  border-radius: 12rpx;
+  margin-left: 10px;
+}
+#paid .list > .botom1 .button1 {
+  color: #4D4D4D;
+  background: none;
+  border: 2rpx solid #4D4D4D;
+  border-radius: 8rpx;
+}
+#paid .cards {
+  margin-top: 20rpx;
+  font-size: 28rpx;
+  border-radius: 12rpx;
+  color: #1A1A1A;
+}
+#paid .cards .card u-cell-item:nth-child(1) .u-cell_title {
+  color: #1A1A1A !important;
+  font-weight: bold !important;
+}
+#paid .cards .card u-cell-item:nth-child(2) .u-cell_title {
+  color: #1A1A1A !important;
+  font-weight: bold !important;
+}
+#paid .cards .card u-cell-item:nth-child(3) .u-cell_title {
+  color: #1A1A1A !important;
+  font-weight: bold !important;
+}
+#paid .cards .card u-cell-item:nth-child(1) .u-cell__value {
+  color: #1A1A1A !important;
+  font-weight: bold !important;
+}
+#paid .cards .card u-cell-item:nth-child(2) .u-cell__value {
+  color: #1A1A1A !important;
+  font-weight: bold !important;
+}
+#paid .cards .card u-cell-item:nth-child(3) .u-cell__value {
+  color: #1A1A1A !important;
+  font-weight: bold !important;
+}
+#paid .botom {
+  background-color: #FFFFFF;
+  width: 750rpx;
+  height: 88rpx;
+  position: absolute;
+  bottom: 0rpx;
+  left: 0rpx;
+}
+#paid .botom .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+  width: 128rpx;
+  height: 48rpx;
+  margin-left: 602rpx;
+  margin-top: 20rpx;
+  color: #4D4D4D;
+  background: none;
+  border: 2rpx solid #4D4D4D;
+  border-radius: 8rpx;
+}
+

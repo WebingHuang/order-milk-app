@@ -1,0 +1,47 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+.phone-modal.data-v-3707fabc {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #b2b2b280;
+  z-index: 9;
+}
+.phone-modal .phone-box.data-v-3707fabc {
+  position: relative;
+  height: 100%;
+}
+.phone-modal .phone-box .phone-list.data-v-3707fabc {
+  position: absolute;
+  bottom: 86px;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+.phone-modal .phone-box .phone-list .row.data-v-3707fabc {
+  background-color: white;
+  text-align: center;
+  border-bottom: 4px solid #f3f3f3;
+  height: 36px;
+  line-height: 36px;
+  color: black;
+}
+.phone-modal .phone-box .phone-cancel.data-v-3707fabc {
+  position: absolute;
+  bottom: 48px;
+  background-color: white;
+  height: 40px;
+  line-height: 40px;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  text-align: center;
+  color: black;
+}
+

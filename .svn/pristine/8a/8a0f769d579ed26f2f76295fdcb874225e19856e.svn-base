@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "待付款",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-cell-group": "/uview-ui/components/u-cell-group/u-cell-group",
+    "u-cell-item": "/uview-ui/components/u-cell-item/u-cell-item"
+  }
+}

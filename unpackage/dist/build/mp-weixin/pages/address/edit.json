@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "添加学生信息",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-form": "/uview-ui/components/u-form/u-form",
+    "u-form-item": "/uview-ui/components/u-form-item/u-form-item",
+    "u-input": "/uview-ui/components/u-input/u-input",
+    "u-picker": "/uview-ui/components/u-picker/u-picker",
+    "u-search": "/uview-ui/components/u-search/u-search",
+    "u-button": "/uview-ui/components/u-button/u-button",
+    "u-switch": "/uview-ui/components/u-switch/u-switch"
+  }
+}

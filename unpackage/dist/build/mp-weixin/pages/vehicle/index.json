@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "购物车",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "sideslip-car": "/components/sideslip-car/sideslip-car",
+    "tarbar": "/components/tarbar/tarbar"
+  }
+}

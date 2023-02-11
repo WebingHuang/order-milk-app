@@ -1,0 +1,861 @@
+<template>
+	<view id="index">
+
+		<phone-modal v-model="showPhone" :list="list" v-if="showPhone"></phone-modal>
+		<template>
+			<view>
+				<u-navbar :is-back="false" title="学生订牛奶" :background="background" :border-bottom="false"
+					title-color="#FFFFFF"></u-navbar>
+			</view>
+		</template>
+
+
+
+		<template>
+			<view class="top">
+				<view class="search">
+					<u-search placeholder="输入商品名称" v-model="keyword" :show-action="false" :input-align="center" disabled="true"
+						@click="search">
+					</u-search>
+				</view>
+				<view class="kefu">
+					<button @click="showPhone=!showPhone" show-message-card session-from send-message-path send-message-title
+						:plain="true">
+						<image lazy-load="true" src="http://120.78.163.4:8082/index/kefu.png" mode=""></image><strong></strong>
+					</button>
+				</view>
+			</view>
+		</template>
+
+		<template>
+			<view class="swiper">
+				<u-swiper :list="swiperList" @click="getInfoById" :interval="3000"></u-swiper>
+			</view>
+		</template>
+	<!-- 	<template>
+			<view class="notice">
+				<view class="lfte">
+					资讯
+				</view>
+				<view class="right">
+					<u-notice-bar :list="noticeList" :speed="80" :volume-icon="false" :more-icon="false" type="none"></u-notice-bar>
+				</view>
+			</view>
+		</template>
+
+		<template>
+			<view class="card">
+				<view class="lfte" @click="toCompany">
+					<text>
+						公司介绍
+					</text>
+
+				</view>
+				<view class="right" @click="toAgent">
+					<text>
+						升级代理
+					</text>
+
+				</view>
+			</view>
+		</template>
+ -->
+	<!-- 	<template>
+			
+			<view class="video">
+				<view class="title">
+					<view class="lfte">
+						<text>视频</text>
+						<image lazy-load="true" src="http://120.78.163.4:8082/index/class.png" mode=""></image>
+					</view>
+				</view>
+				<swiper class="swiper" :indicator-dots="true"  :autoplay="autoplay" :circular="true" @change="videoChange" indicator-active-color="#ffffff" indicator-color="rgba(255, 255, 255, .6)">
+					<swiper-item v-for="(item,index) in videoList" :key="index" class="item">
+						     <video :id="'myVideo'+index" :ref="'myVideo'+index" :src="item.imgUrl"></video>
+					</swiper-item>										
+				</swiper>
+				
+				
+				
+			</view>
+		</template>
+ -->
+		<template>
+			<view class="commodity">
+
+				<view class="title">
+
+					<view class="lfte">
+						<text>推荐系列</text>
+						<image lazy-load="true" src="http://120.78.163.4:8082/index/class.png" mode=""></image>
+					</view>
+					<view class="right" @click="more">
+						<text>查看更多</text>
+						<image lazy-load="true" src="http://120.78.163.4:8082/index/dj.png" mode=""></image>
+					</view>
+
+				</view>
+				<view class="list">
+					<view class="list_item" @click="getcommodityInfo(item)" v-for="(item,index) in dataList"
+						:key="index">
+						<view class="cover">
+							<image lazy-load="true" :src="item.imgUrl" mode=""></image>
+							<view class="activity" v-if="item.isActivity==1">
+								限时活动
+							</view>
+						</view>
+						<view class="text">
+							<view class="name">
+								{{item.spuName}}
+							</view>
+							<view class="attribute">
+								<view class="">
+									<view class="">
+										<text class="price" v-if="item.floorPrice == item.highestPrice">
+											¥{{item.floorPrice}}
+										</text>
+										<text class="price" v-else>
+											¥ {{item.floorPrice}}-{{item.highestPrice}}
+										</text>
+									</view>
+									
+									<!-- <view class="discount">
+										<view class="member">会员价</view>
+										<view class="member_price" v-if="item.floorPriceVip == item.highestPriceVip">
+											{{item.floorPriceVip || 0}}
+										</view>
+										<view class="member_price" v-else>
+											{{item.floorPriceVip || 0}}-{{item.highestPriceVip || 0}}
+										</view>
+									</view> -->
+								</view>
+								
+								<text class="purchase">
+									{{ item.salesQuantity ? sum(item) : 0}}人付款
+								</text>
+							</view>
+						
+						</view>
+					</view>
+
+				</view>
+				<u-loadmore :status="status" />
+			</view>
+			<tarbar id="tarbar" @change="handlerClick" :current="current" />
+		</template>
+		<!-- 会员卡弹窗!!  会员卡弹窗!! 会员卡弹窗!!-->
+		<template>
+			<!-- v-model="show" mode="center" border-radius="14" width="250.5px" height="332px" closeable="true" -->
+			<view class="imgs">
+				<u-mask :show="show" @click="show = false" width="250.5px" height="332px">
+					<view class="san">
+						<image lazy-load="true" src="http://120.78.163.4:8082/index/huiyuan.png" mode="" width="100"
+							height="100"></image>
+
+						<view class="monry">
+							¥ 100
+						</view>
+						<view class="monry menkan">
+							无门槛
+						</view>
+						<view class="monry shiyong">
+							去使用
+						</view>
+						<view class="names">
+							用户名称
+						</view>
+					</view>
+				</u-mask>
+				<!-- 弹窗按钮开关!!!! -->
+				<!-- <u-button @click="show = true">打开</u-button> -->
+			</view>
+
+		</template>
+
+
+
+
+	</view>
+</template>
+
+<script>
+	import tarbar from '../../components/tarbar/tarbar.vue'
+	import phoneModal from "../../components/phone-modal/phone-modal.vue"
+
+	
+	export default {
+		data() {
+			return {
+				list: [],
+				showPhone: false,
+				autoplay: false,
+				//会员卡弹窗
+				show: false,
+				videoList:[],//视频轮播图
+				background: "none",
+				swiperList: [{
+						image: 'https://cdn.uviewui.com/uview/swiper/1.jpg',
+						title: '昨夜星辰昨夜风，画楼西畔桂堂东'
+					},
+					{
+						image: 'https://cdn.uviewui.com/uview/swiper/2.jpg',
+						title: '身无彩凤双飞翼，心有灵犀一点通'
+					},
+					{
+						image: 'https://cdn.uviewui.com/uview/swiper/3.jpg',
+						title: '谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳'
+					}
+				],
+
+				noticeList: [],
+
+				dataList: [], //数据集合
+
+				page: {
+					status: 'loadMore',
+					pageNum: 1,
+					pageSize: 10
+
+				},
+				hasMore: true,
+				current: 0, //当前激活项
+				videoImg:'',
+				title:'',
+				flag:0,
+				isAgent:false, //是否是代理
+
+			};
+		},
+		onLoad(obj) {
+			
+			
+			
+			
+			
+			
+		
+			
+			this.dataList = [];
+			
+			const token = uni.getStorageSync('token');
+			if(token){
+				this.getOpenInfo(token);
+			}else{
+				this.getCommodity();
+			}
+			this.getSwiper();
+			this.getVideoList();
+			this.getfindOne();
+			this.getReq();
+		},
+		onShow() {
+			
+		},
+	
+		onReachBottom() { //上拉加载
+			if (this.page.status === 'loadMore') {
+				this.page.pageNum++;
+				this.getCommodity();
+				
+			}
+		},
+		onPageScroll(obj) {
+			
+			//动态跳转头部背景颜色
+			if (obj.scrollTop < 1) { //距离顶部的距离
+				this.$nextTick(function() {
+					this.background = 'none'
+				})
+			} else {
+				this.$nextTick(function() {
+					this.background = {
+						background: '#3e8bf3'
+					}
+				})
+			}
+		},
+		components: {
+			tarbar,
+			phoneModal,
+		},
+		methods: {
+			getReq() {
+				this.$u.api.queryContactUs().then(res => {
+					this.list = res;
+				})
+			},
+			sum(item) {
+				let num = 0;
+				num += Number(item.salesQuantity||0);
+				num += Number(item.virtualQuantity||0);
+				return num;
+			},
+			
+			//监听轮播图
+			videoChange(e){
+				let index = e.detail.current
+				this.videoList.forEach((item, index) => {
+					uni.createVideoContext(`myVideo${index}`).stop()
+				})
+			},
+			
+			in_array(stringToSearch, arrayToSearch) {
+			     for (var s = 0; s < arrayToSearch.length; s++) {
+			      var thisEntry = arrayToSearch[s].toString();
+			      if (thisEntry == stringToSearch) {
+			       return true;
+			      }
+			     }
+			     return false;
+			},
+			//一起
+			getOpenInfo(token){
+				this.$u.api.getOpenInfo()
+					.then(res => {
+						if(this.in_array('944f251d-2a9e-49d2-b416-7eaa6b68ee3f',res.roleCode)){ //是否包含城市代理商ID
+							
+							for(var i = 0; i<res.roleList.length;i++){
+								if(res.roleList[i].roleCode == '944f251d-2a9e-49d2-b416-7eaa6b68ee3f'){
+									this.isAgent = true;
+									break;
+								}
+							}
+						}else{
+							if(this.in_array('d2fe397f-2d95-4532-a1eb-74efbe242659',res.roleCode)){ //是否包含地区代理商ID
+								for(var i = 0; i<res.roleList.length;i++){
+									if(res.roleList[i].roleCode == 'd2fe397f-2d95-4532-a1eb-74efbe242659'){
+										this.isAgent = true;
+										break;
+									}
+								}
+							}else{
+								if(this.in_array('d2fe397f-2d95-4532-a1eb-74efbe242660',res.roleCode)){ //是否包含会员ID
+								
+									for(var i = 0; i<res.roleList.length;i++){
+										if(res.roleList[i].roleCode == 'd2fe397f-2d95-4532-a1eb-74efbe242660'){
+											this.isAgent = false;
+											break;
+										}
+									}
+								}else{
+										this.isAgent = false;
+								}
+							}
+						}
+						
+						this.getCommodity();
+						
+						
+					}).catch((err) => {
+						this.getCommodity();
+						console.log(err)
+				
+					})
+				
+				
+			},
+			//查询商品详情
+			getInfoById(index){
+				
+				if(this.swiperList[index].spuId){
+					uni.navigateTo({
+						url: '/pages/commodity/info?id='+this.swiperList[index].spuId+'&imgurl='+ this.swiperList[index].spuImg
+					});
+				}
+				
+			},
+			more(){
+				uni.navigateTo({
+					url: '/pages/commodity/index'
+				});
+			},
+			getfindOne(){
+				this.$u.api.findOne().then(res=>{
+					// console.log(res)
+					this.noticeList.push(res.title)
+				}).catch()
+			},
+			getVideoList(){
+				this.$u.api.queryVideoList()
+				.then(res=>{
+					this.videoList = res
+				}).catch()
+			},
+			handlerClick(index) {
+				
+				// console.log(index)
+				this.current = index
+			},
+			search() {
+				uni.navigateTo({
+					url: '/pages/commodity/index'
+				});
+			},
+			customer() { //联系客服
+				this.$requiredLogin();
+			},
+
+			toAgent() {
+				
+				// return
+				
+				uni.navigateTo({
+					url: '/pages/agent/index'
+				});
+			},
+
+
+			//跳转公司介绍
+			toCompany() {
+				uni.navigateTo({
+					url: '/pages/company/index'
+				});
+			},
+			getcommodityInfo(item) {
+				uni.navigateTo({
+					url: '/pages/commodity/info?id=' + item.id + '&imgurl=' + item.imgUrl
+				});
+			},
+			
+
+			//获取轮播图
+			getSwiper() {
+
+				this.$u.api.getSwiper()
+					.then(res => {
+
+
+						res.forEach(item => {
+							item['image'] = item.imgUrl
+
+						})
+						this.swiperList = res
+
+					}).catch((err) => {
+						console.log(err)
+
+					})
+			},
+			// 用户分页查询商品
+			getCommodity() {
+				
+				console.log(this.isAgent)
+				
+				
+				// console.log("------")
+				
+				this.$u.api.getCommodity({
+						"commodityQueryVo": {
+							"spuName": "",
+							"flag":this.isAgent ?  1 : 0, 
+							"homeStatus":1,
+						},
+						"pageRequest": {
+							"pageNum": this.page.pageNum,
+							"pageSize": this.page.pageSize
+						}
+					})
+					.then(res => {
+
+						// console.log(res,'--------------')
+						res.records.forEach(item => {
+							this.dataList.push(item)
+						})
+
+						if (res.current == res.pages) {
+							this.page.status = 'noneMore';
+						}
+						// console.log(this.dataList);
+
+
+					}).catch((err) => {
+						console.log(err)
+
+					})
+			},
+
+
+		},
+
+	}
+</script>
+
+<style lang="scss" scoped>
+	#index {
+		background: url(http://120.78.163.4:8082/index/bj.png) no-repeat;
+		background-size: contain;
+
+		.top {
+			// background: #ff9159;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			padding: 0 22rpx;
+			padding-top: 20rpx;
+
+			.search {
+				width: 614rpx;
+			}
+
+			.kefu {
+				width: 40rpx;
+				height: 40rpx;
+
+				button {
+
+					border: none;
+					width: 40rpx;
+					height: 40rpx;
+					margin: 0;
+					display: flex;
+					padding: 0;
+
+					image {
+						width: 40rpx;
+						height: 40rpx;
+					}
+				}
+
+
+
+			}
+
+		}
+
+		.swiper {
+			padding: 0 22rpx;
+			margin-top: 40rpx;
+		}
+
+		.notice {
+			padding: 0 22rpx;
+
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+
+			.lfte {
+				background: url(http://120.78.163.4:8082/index/zixun.png) no-repeat;
+				background-size: cover;
+				height: 32rpx;
+				width: 72rpx;
+				font-size: 24rpx;
+				color: #fff;
+				text-align: center;
+			}
+
+			.right {
+				width: 90%;
+			}
+
+		}
+
+		.card {
+			font-size: 28rpx;
+			margin-top: 12rpx;
+			color: #FFFFFF;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+
+			.lfte {
+				background: url(http://120.78.163.4:8082/index/company.png) no-repeat;
+				background-size: contain;
+				width: 354rpx;
+				height: 153rpx;
+				padding-left: 32rpx;
+				padding-top: 20rpx;
+			}
+
+			.right {
+				background: url(http://120.78.163.4:8082/index/agent.png) no-repeat;
+				background-size: contain;
+				width: 354rpx;
+				height: 153rpx;
+				padding-left: 32rpx;
+				padding-top: 20rpx;
+			}
+
+		}
+
+
+		.video {
+			padding: 0 22rpx;
+			margin-top: 20rpx;
+			border-radius: 12rpx;
+			
+			width: 100%;
+			.title {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			
+				.lfte {
+					display: flex;
+					justify-content: space-around;
+					align-items: center;
+			
+					text {
+						font-size: 32rpx;
+						font-weight: bold;
+					
+						
+					}
+			
+					image {
+						width: 47rpx;
+						height: 24rpx;
+						margin-left: 20rpx;
+					}
+			
+				}
+			
+				.right {
+					display: flex;
+					justify-content: space-around;
+					align-items: center;
+			
+					text {
+						font-size: 24rpx;
+			
+					}
+			
+					image {
+						width: 12rpx;
+						height: 24rpx;
+						margin-left: 20rpx;
+					}
+			
+				}
+			}
+			
+			
+			&>.swiper{
+				height: 360rpx;
+				width: 100%;
+				padding: 0;
+				border-radius: 12rpx;
+				&>.item{
+					border-radius: 12rpx;
+				}
+			}
+
+			video {
+				height: 360rpx;
+				width: 100%;
+				border-radius: 12rpx;
+				// margin-top: 16rpx;
+			}
+
+		}
+
+		.commodity {
+
+			padding: 0 22rpx;
+			margin-top: 32rpx;
+
+			.title {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+
+				.lfte {
+					display: flex;
+					justify-content: space-around;
+					align-items: center;
+
+					text {
+						font-size: 32rpx;
+						font-weight: bold;
+						color: $u-tilte-color;
+					}
+
+					image {
+						width: 47rpx;
+						height: 24rpx;
+						margin-left: 20rpx;
+					}
+
+				}
+
+				.right {
+					display: flex;
+					justify-content: space-around;
+					align-items: center;
+
+					text {
+						font-size: 24rpx;
+
+					}
+
+					image {
+						width: 12rpx;
+						height: 24rpx;
+						margin-left: 20rpx;
+					}
+
+				}
+			}
+
+
+			.list {
+				margin-top: 32rpx;
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
+				margin-bottom: 80rpx;
+				.list_item {
+					width: 344rpx;
+					height: 517rpx;
+
+					.cover {
+						width: 100%;
+						height: 344rpx;
+						position: relative;
+
+						image {
+							border-radius: 12rpx;
+							width: 100%;
+							height: 100%;
+						}
+						.activity{
+							position: absolute;
+							top: 0rpx;
+							color: #fff;
+							background: red;
+							font-size: 20rpx;
+							padding: 6rpx 8rpx;
+							border-radius: 0 0 8rpx 0;    
+						}
+					}
+
+					.text {
+						.name {
+							font-size: 28rpx;
+							font-weight: bold;
+							padding-top: 16rpx;
+							overflow: hidden;
+							text-overflow:ellipsis;
+							white-space: nowrap;
+							color: $u-tilte-color;
+						}
+
+						.attribute {
+							padding-top: 12rpx;
+							display: flex;
+							justify-content: space-between;
+							align-items: flex-end;
+							
+							
+							.discount{
+								display: flex;
+								align-items: center;
+								.member{
+									color: #FFFFFF;
+									font-size: 16rpx;
+									border-radius: 4rpx;
+									width: 60rpx;
+									height: 24rpx;
+									background: linear-gradient($u-main-color,$u-vice-color); /* 标准语法 */
+									display: flex;
+									justify-content: center;
+									align-items: center;
+								}
+								
+								.member_price{
+									color: $u-main-color;
+									font-size: 22rpx;
+									font-weight: bold;
+									margin-left: 4rpx;
+									
+								}
+								
+							}
+							
+							
+
+							.price {
+								color: $u-main-color;
+								font-size: 28rpx;
+								font-weight: bold;
+							}
+
+							.purchase {
+								color: #4D4D4D;
+								font-size: 22rpx;
+								font-weight: bold;
+							}
+
+						}
+					
+					
+					}
+				}
+			}
+		}
+
+		.imgs {
+
+			.san {
+				justify-content: center;
+				align-items: center;
+				margin-top: 334px;
+
+				image {
+					width: 250.5px;
+					height: 332px;
+					position: relative;
+					bottom: 184px;
+					left: 62.5px;
+				}
+
+				&>.names {
+					z-index: 1000;
+					font-size: 32rpx;
+					font-weight: bold;
+					color: #FFDAA6;
+					position: relative;
+					bottom: 514.5px;
+					left: 151px;
+
+				}
+
+				&>.monry {
+					z-index: 1000;
+					font-size: 71.86rpx;
+					font-weight: bold;
+					color: #DB3E3F;
+					position: relative;
+					bottom: 339.5px;
+					left: 151px;
+
+				}
+
+				&>.menkan {
+					z-index: 10000;
+					font-size: 28rpx;
+					font-weight: bold;
+					bottom: 342.5px;
+					color: #E64545;
+					left: 172px;
+
+				}
+
+				&>.shiyong {
+					font-size: 32rpx;
+					font-weight: bold;
+					color: #C2261E;
+					bottom: 298.5px;
+					left: 151px;
+
+				}
+			}
+		}
+		#tarbar{
+			width: 100%;
+			z-index: 9999;
+			position: fixed;
+			bottom: 0;
+		}
+	}
+</style>

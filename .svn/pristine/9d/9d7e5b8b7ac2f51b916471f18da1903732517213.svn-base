@@ -1,0 +1,138 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+#order {
+  background: #f0f0f0;
+}
+#order .tabs {
+  width: 750rpx;
+  height: 88rpx;
+  overflow-x: auto;
+  background: #FFFFFF;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  z-index: 100;
+}
+#order .tabs .tabsList {
+  color: #000000;
+}
+#order .activeColor {
+  color: #3e8bf3;
+  border-bottom: 1rpx solid #3e8bf3;
+}
+#order .wrap {
+  padding-top: 100rpx;
+}
+#order .wrap .list {
+  padding-top: 20rpx;
+  margin: 0 21rpx;
+}
+#order .wrap .list > .item {
+  padding: 0 20rpx;
+  margin-bottom: 20rpx;
+  background: #FFFFFF;
+  border-radius: 12rpx;
+  width: 100%;
+}
+#order .wrap .list > .item > .top {
+  padding-top: 20rpx;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20rpx;
+}
+#order .wrap .list > .item > .top .lfte {
+  height: 180rpx;
+}
+#order .wrap .list > .item > .top .lfte image {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 12rpx;
+}
+#order .wrap .list > .item > .top .right {
+  width: 469rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+#order .wrap .list > .item > .top .right .title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #1A1A1A;
+}
+#order .wrap .list > .item > .top .right .text {
+  display: flex;
+  justify-content: space-between;
+}
+#order .wrap .list > .item > .top .right .text .specs {
+  font-size: 24rpx;
+  color: #808080;
+}
+#order .wrap .list > .item > .top .right .text .num {
+  font-size: 28rpx;
+  color: #1A1A1A;
+}
+#order .wrap .list > .item > .top .right .msginfo {
+  display: flex;
+  justify-content: space-between;
+}
+#order .wrap .list > .item > .top .right .msginfo .msg {
+  color: #3e8bf3;
+  font-size: 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12rpx;
+  width: 160rpx;
+  height: 32rpx;
+}
+#order .wrap .list > .item > .top .right .msginfo .money {
+  color: #3e8bf3;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+#order .wrap .list > .item > .botom {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+#order .wrap .list > .item > .botom .but {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #3e8bf3;
+  color: #FFFFFF;
+  font-size: 24rpx;
+  width: 128rpx;
+  height: 48rpx;
+  border-radius: 12rpx;
+  margin-left: 10px;
+}
+#order .wrap .list > .item > .botom .button {
+  min-width: 128rpx;
+  width: -webkit-max-content;
+  width: max-content;
+  height: 48rpx;
+  text-align: center;
+  line-height: 48rpx;
+  color: #4D4D4D;
+  border: 2rpx solid #4D4D4D;
+  border-radius: 8rpx;
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+  margin-left: 40rpx;
+}
+#order .wrap .list > .item > .botom .activeButton {
+  background: #3e8bf3;
+  color: #FFFFFF;
+  border: none;
+}
+#order .wrap .list > .item > .botom .state {
+  border: none;
+  color: #3e8bf3;
+}
+

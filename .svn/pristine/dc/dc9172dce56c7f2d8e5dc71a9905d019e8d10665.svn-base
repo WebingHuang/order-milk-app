@@ -1,0 +1,254 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+#refund-processing.data-v-a844745c {
+  background: url(http://120.78.163.4:8082/my/bj.png) no-repeat;
+  background-size: contain;
+  background-color: #F0F0F0;
+}
+#refund-processing .top-info.data-v-a844745c {
+  height: 346rpx;
+}
+#refund-processing .top-info .seller-info.data-v-a844745c {
+  background-color: #FFFFFF;
+  border-radius: 12rpx;
+  width: 708rpx;
+  height: 195rpx;
+  margin: 0 auto;
+  padding-left: 20rpx;
+  padding-top: 20rpx;
+  display: flex;
+  flex-direction: column;
+}
+#refund-processing .top-info .seller-info > view.data-v-a844745c:first-child {
+  font-size: 24rpx;
+  line-height: 24rpx;
+  color: #808080;
+}
+#refund-processing .top-info .seller-info .seller-contact.data-v-a844745c {
+  display: flex;
+  flex-direction: column;
+}
+#refund-processing .top-info .seller-info .seller-contact > text.data-v-a844745c:first-child {
+  height: 28rpx;
+  line-height: 28rpx;
+  font-size: 28rpx;
+  color: #1A1A1A;
+  margin-top: 19rpx;
+}
+#refund-processing .top-info .seller-info .seller-contact > text.data-v-a844745c:nth-child(2) {
+  height: 28rpx;
+  line-height: 28rpx;
+  font-size: 28rpx;
+  color: #1A1A1A;
+  margin-top: 17rpx;
+}
+#refund-processing .top-info .seller-info .seller-contact > text.data-v-a844745c:nth-child(3) {
+  height: 28rpx;
+  line-height: 28rpx;
+  font-size: 28rpx;
+  color: #1A1A1A;
+  margin-top: 19rpx;
+}
+#refund-processing .top-info .logistics-info.data-v-a844745c {
+  background-color: #FFFFFF;
+  border-radius: 12rpx;
+  width: 708rpx;
+  height: 146rpx;
+  margin: 0 auto;
+  margin-top: 20rpx;
+  padding-left: 20rpx;
+  padding-top: 20rpx;
+  display: flex;
+  flex-direction: column;
+}
+#refund-processing .top-info .logistics-info > text.data-v-a844745c:first-child {
+  font-size: 24rpx;
+  line-height: 24rpx;
+  color: #808080;
+}
+#refund-processing .top-info .logistics-info > text.data-v-a844745c:nth-child(2) {
+  height: 28rpx;
+  line-height: 28rpx;
+  font-size: 28rpx;
+  color: #1A1A1A;
+  margin-top: 17rpx;
+}
+#refund-processing .top-info .logistics-info > text.data-v-a844745c:nth-child(3) {
+  height: 28rpx;
+  line-height: 28rpx;
+  font-size: 28rpx;
+  color: #1A1A1A;
+  margin-top: 19rpx;
+}
+#refund-processing .refund-goodinfo.data-v-a844745c {
+  margin: 0 auto;
+  margin-top: 30rpx;
+  width: 708rpx;
+  height: 620rpx;
+  background-color: #FFFFFF;
+  border-radius: 12rpx;
+}
+#refund-processing .refund-goodinfo .top.data-v-a844745c {
+  width: 100%;
+  height: 220rpx;
+  margin: 0 auto;
+  display: flex;
+}
+#refund-processing .refund-goodinfo .top .left-box.data-v-a844745c {
+  width: 220rpx;
+  height: 220rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#refund-processing .refund-goodinfo .top .left-box .left-img.data-v-a844745c {
+  margin: 10px;
+  background-color: #3e8bf3;
+  border-radius: 16rpx;
+  width: 180rpx;
+  height: 180rpx;
+}
+#refund-processing .refund-goodinfo .top .right-goodsinfo.data-v-a844745c {
+  margin-top: 18rpx;
+}
+#refund-processing .refund-goodinfo .top .right-goodsinfo .first-row.data-v-a844745c {
+  font-size: 28rpx;
+  color: #1A1A1A;
+  line-height: 36rpx;
+  margin-right: 20rpx;
+  letter-spacing: 1rpx;
+}
+#refund-processing .refund-goodinfo .top .right-goodsinfo .second-row.data-v-a844745c {
+  font-size: 24rpx;
+  color: #808080;
+  margin-top: 17rpx;
+  width: 488rpx;
+  height: 23rpx;
+  line-height: 23rpx;
+}
+#refund-processing .refund-goodinfo .top .right-goodsinfo .left-config.data-v-a844745c {
+  float: left;
+}
+#refund-processing .refund-goodinfo .top .right-goodsinfo .number.data-v-a844745c {
+  color: #1A1A1A;
+  font-size: 28rpx;
+  font-weight: bold;
+  float: right;
+  margin-right: 20rpx;
+}
+#refund-processing .refund-goodinfo .top .right-goodsinfo .number.data-v-a844745c:after {
+  content: "";
+  display: block;
+  visibility: hidden;
+  clear: both;
+}
+#refund-processing .refund-goodinfo .top .right-goodsinfo .bottom-info.data-v-a844745c {
+  margin-top: 36rpx;
+  line-height: 25rpx;
+  height: 25rpx;
+}
+#refund-processing .refund-goodinfo .top .right-goodsinfo .bottom-info > view.data-v-a844745c:first-child {
+  font-size: 20rpx;
+  float: left;
+  width: 160rpx;
+  height: 32rpx;
+  color: #3e8bf3;
+  text-align: center;
+}
+#refund-processing .refund-goodinfo .top .right-goodsinfo .bottom-info > view.data-v-a844745c:nth-child(2) {
+  color: #3e8bf3;
+  font-size: 32rpx;
+  float: right;
+  margin-right: 20rpx;
+}
+#refund-processing .refund-goodinfo .bottom.data-v-a844745c {
+  margin-top: 45rpx;
+  height: 400rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+#refund-processing .bottom-view.data-v-a844745c {
+  width: 100%;
+  height: 88rpx;
+  background-color: #FFFFFF;
+  position: fixed;
+  bottom: 0rpx;
+}
+#refund-processing .bottom-view .bottom-btn.data-v-a844745c {
+  width: 128rpx;
+  height: 48rpx;
+  color: #FFFFFF;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  text-align: center;
+  padding: 0rpx;
+  background-image: linear-gradient(#FF9933, #FF6633);
+  position: absolute;
+  bottom: 20rpx;
+  right: 20rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: nowrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#refund-processing .popup.data-v-a844745c {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+#refund-processing .popup .top-title.data-v-a844745c {
+  color: #1A1A1A;
+  font-size: 28rpx;
+  font-weight: bold;
+  margin-top: 31rpx;
+}
+#refund-processing .popup .logistics-input.data-v-a844745c {
+  margin: 0 auto;
+  margin-top: 51rpx;
+  width: 480rpx;
+  height: 100rpx;
+}
+#refund-processing .popup .bottom-btn-group.data-v-a844745c {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 88rpx;
+  position: absolute;
+  bottom: 0rpx;
+}
+#refund-processing .popup .bottom-btn-group > view.data-v-a844745c {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#refund-processing .popup .bottom-btn-group .cancel-btn.data-v-a844745c {
+  color: #808080;
+  background-color: #fff;
+  border-top-left-radius: 0rpx;
+  border-top-right-radius: 0rpx;
+  border-bottom-right-radius: 0rpx;
+  box-shadow: 0rpx -1rpx 0rpx 0rpx rgba(6, 0, 1, 0.1), 1rpx 0rpx 0rpx 0rpx rgba(6, 0, 1, 0.1);
+  border-radius: 0rpx 0rpx 0rpx 20rpx;
+  font-size: 32rpx;
+}
+#refund-processing .popup .bottom-btn-group .confirm-btn.data-v-a844745c {
+  color: #FFFFFF;
+  background-color: #3e8bf3;
+  border-top-right-radius: 0rpx;
+  border-top-left-radius: 0rpx;
+  border-bottom-left-radius: 0rpx;
+  box-shadow: 0rpx -1rpx 0rpx 0rpx rgba(6, 0, 1, 0.1), 1rpx 0rpx 0rpx 0rpx rgba(6, 0, 1, 0.1);
+  border-radius: 0rpx 0rpx 20rpx 0rpx;
+  font-size: 32rpx;
+}
+

@@ -1,0 +1,425 @@
+<template>
+	<view id="wait-receiving-detail" :style="{height:Height}">
+		<template>
+			<view>
+				<u-navbar  height="44"   title="待收货" :background="none"  :border-bottom="false" title-color="#FFFFFF"></u-navbar>
+			</view>
+		</template>
+			<view class="list">
+				
+				<view class="item">
+					<!-- 头部 -->
+					<view class="top">
+						<view class="lfte">
+							<text class="defalt">默认</text> 广东省 东莞市
+						</view>
+						
+					</view>
+					<!-- 中间 -->
+					<view class="text">
+						<view class="lfte">
+							长安镇 某某某某某某某某某地区
+						</view>
+						<view class="right">
+							<image src="http://120.78.163.4:8082/index/dj.png" mode=""></image>
+						</view>
+					</view>
+					<!-- 底部 -->
+					<view class="lower">
+						<view class="lfte">
+							<text>某某某    12345678910</text>
+						</view>
+						<view class="right">
+							
+						</view>
+					</view>
+				</view>
+				<!-- 中间部分 -->
+				<view class="top1">
+					<view class="lfte1"> 
+						<image src="http://120.78.163.4:8082/index/commodity.png" mode=""></image>
+					</view>
+					<view class="right1">
+						<view class="title1">
+							我是标题我是标题我是标题我是标题我是标题我是标题
+						</view>
+						
+						<view class="text1">
+							<text class="specs1">
+								某某某规格 丨 某某某规格…
+							</text>
+							<text class="num1">
+								x1
+							</text>
+						</view>
+						<view class="msginfo1">
+							<!-- <text class="msg1">
+								7天无理由退货
+							</text> -->
+							<text class="money1">
+								¥69.00
+							</text>
+						</view>
+					</view>
+				</view>
+				<!-- 下一层 -->
+				<view class="cards">
+				<u-cell-group class="card">
+						<u-cell-item  title="订单编号" value="0123456789109876543210"></u-cell-item>
+						<u-cell-item  title="创建时间" value="2021-01-01  00:00"></u-cell-item>
+						<u-cell-item  title="配送方式" value="商家自配"></u-cell-item>
+						
+					</u-cell-group>
+				</view>
+				<view class="cards">
+				<u-cell-group class="card">
+						<u-cell-item  title="商品总额" value="¥69.00"></u-cell-item>
+						<u-cell-item  title="运费" value="¥0.00"></u-cell-item>
+					</u-cell-group>
+				</view>
+				
+			
+			</view>
+			<!-- 底部按钮 -->
+			<template>
+				<view class="bottom-view">
+					<!-- <button class="bottom-btn-left" type="default">查看物流</button> -->
+					
+					<button class="bottom-btn-right" type="default" @click="toRefund">申请退货</button>
+				</view>
+			</template>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				Height:"",
+				background:"none",
+			};
+		},
+		onLoad() {
+			this.getAppHeight()
+		},
+		methods:{
+			getAppHeight(){
+				
+				this.Height = uni.getSystemInfoSync().windowHeight + 'px';
+				
+			
+			},
+			toRefund() {
+				uni.navigateTo({
+					url: '/pages/order/refund'
+				});
+			}
+		}
+	}
+</script>
+
+<style lang="scss" scoped>
+	#wait-receiving-detail {
+		background: url(http://120.78.163.4:8082/my/bj.png) no-repeat;
+		background-size: contain;
+		background-color: #F0F0F0;
+		.list {
+			margin: 0 21rpx;
+			padding-top: 22rpx;
+			.item{
+				
+				padding: 0 32rpx;
+				padding-bottom: 20rpx;
+				background-color: #FFFFFF;
+				border-radius: 28rpx;
+				padding-bottom: 22rpx;
+				flex-direction: column;
+				
+				.top{
+					
+					display: flex;
+					justify-content: space-between;
+					flex-wrap: nowrap;
+					
+					&>.lfte{
+							color: 	#1A1A1A;
+							font-size: 28rpx;
+							font-weight: bold;
+							padding-top: 32rpx;
+							padding-bottom: 30rpx;
+							.defalt{
+								font-size: 20rpx;
+								padding: 6rpx 10rpx 7rpx 11rpx;
+								color: #FFFFFF;	
+								background-color: $u-main-color;
+								border-radius: 4rpx;
+								margin-right: 21rpx;
+							}
+					}
+					&>.right{
+							color: #1A1A1A;
+							font-size: 28rpx;
+							font-weight: bold;	
+							padding-top: 32rpx;
+							padding-bottom: 30rpx;
+					}
+				}
+				.text{
+					display: flex;
+					justify-content: space-between;
+					&>.lfte{
+						color: #1A1A1A;
+						font-size: 28rpx;
+						font-weight: bold;
+					}
+					&>.right{
+						image{
+							width: 12rpx;
+							height: 24rpx;
+						}
+					}
+				}
+				.lower{
+					display: flex;
+					justify-content: space-between;
+					padding-top: 33rpx;
+			
+					&>.lfte{
+						color: #1A1A1A;
+						font-size: 28rpx;
+						display: flex;
+						align-items: center;
+						font-weight: bold;
+						image{
+							width: 28rpx;
+							height: 28rpx;
+							
+						}
+						
+					}
+						
+					&>.right{
+						font-size: 24rpx;
+						color: #808080;
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+						width: 209rpx;
+						
+						&>.item{
+							display: flex;
+							align-items: center;
+							justify-content: space-between;
+							flex-direction: row;
+							padding: 0;
+						}
+						
+						text{
+							margin-left: 12rpx;
+						}
+					}
+				}
+			}
+		
+		// 中间部分
+		
+			&>.top1{
+				background-color: #FFFFFF;
+				display: flex;
+				justify-content: space-between;
+				border-radius: 12rpx;
+				margin-top: 20rpx;
+				.lfte1{
+					image{
+						padding: 20rpx 21rpx 20rpx 20rpx;
+						width: 180rpx;
+						height: 180rpx;
+						border-radius: 12rpx;
+					}
+				}
+				.right1{
+					width: 469rpx;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					.title1{
+						padding-top: 18rpx;
+						font-size: 28rpx;
+						font-weight: bold;
+						color: #1A1A1A;
+					}
+					.text1{
+						display: flex;
+						justify-content: space-between;
+						.specs1{
+							font-size: 24rpx;
+							color: #808080;
+						}
+						.num1{
+							padding-right: 19rpx;
+							font-size: 28rpx;
+							color:#1A1A1A;
+						}
+					}
+					.msginfo1{
+						margin-bottom: 20rpx;
+						margin-right: 20rpx;
+						display: flex;
+						justify-content: space-between;
+						.msg1{
+							padding: 7rpx 15rpx 6rpx 15rpx;
+							color: $u-main-color;
+							font-size: 20rpx;
+							// background:#FFF0E5;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+						    border-radius: 12rpx;
+						}
+						.money1{
+							color: $u-main-color;
+							font-size: 32rpx;
+							font-weight: bold;
+						}
+					}
+				}
+				
+			}
+		
+			&>.botom1{
+				display: flex;
+			    flex-direction: row-reverse;
+				align-items: center;
+				
+				.but1{
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					background: #FF6633;
+					color: #FFFFFF;
+					font-size: 24rpx;
+					width: 128rpx;
+					height: 48rpx;
+					border-radius: 12rpx;
+					margin-left: 10px;
+		
+				}
+				.button1{
+					color: #4D4D4D;
+					background: none;
+					border: 2rpx solid #4D4D4D;
+					border-radius: 8rpx;
+					
+				}
+			}
+		
+		
+		}
+		
+		.cards{
+			margin-top: 20rpx;
+			font-size: 28rpx;
+			border-radius: 12rpx;
+			color: #1A1A1A;
+			.card{
+				u-cell-item:nth-child(1){
+					.u-cell_title{
+						color: #1A1A1A !important;
+						font-weight: bold !important;
+					}
+				}
+			// 
+			u-cell-item:nth-child(2){	
+				.u-cell_title{
+					color: #1A1A1A !important;
+					font-weight: bold !important;
+				}
+			}
+			// 
+			u-cell-item:nth-child(3){
+				.u-cell_title{
+					color: #1A1A1A !important;
+					font-weight: bold !important;
+				}
+			}
+			// 
+			u-cell-item:nth-child(1){
+				.u-cell__value{
+					color: #1A1A1A !important;
+					font-weight: bold !important;
+				}
+			}
+			u-cell-item:nth-child(2){
+				.u-cell__value{
+					color: #1A1A1A !important;
+					font-weight: bold !important;
+				}
+			}
+			u-cell-item:nth-child(3){
+				.u-cell__value{
+					color: #1A1A1A !important;
+					font-weight: bold !important;
+				}
+			}
+			}
+		}
+		
+		
+		.bottom-view {
+			width: 100%;
+			height: 88rpx;
+			background-color: #FFFFFF;
+			
+			position: fixed;
+			bottom: 0rpx;
+			.bottom-btn-left {
+				width: 128rpx;
+				height: 48rpx;
+				color: #4D4D4D;
+				border-radius: 8rpx;
+				font-size: 24rpx;
+				line-height: 24rpx;
+				text-align: center;
+				padding: 0rpx;  //文字如果换行，注意清除内边距
+				border: 1rpx solid #4D4D4D;
+				
+				
+				position: absolute;  //绝对定位是相对于最近的一个定位（fixed/realative）
+				bottom: 20rpx;
+				right: 188rpx;
+				
+				box-sizing: border-box;
+				display: flex;
+				flex-wrap:nowrap;
+				justify-content: center;
+				align-items: center;
+			}
+			
+			.bottom-btn-right {
+				width: 128rpx;
+				height: 48rpx;
+				color: #4D4D4D;
+				border-radius: 8rpx;
+				font-size: 24rpx;
+				line-height: 24rpx;
+				text-align: center;
+				padding: 0rpx;  //文字如果换行，注意清除内边距
+					border: 1rpx solid #4D4D4D;
+				
+				// background-image: #FFFFFF;
+				
+				position: absolute;
+				bottom: 20rpx;
+				right: 20rpx;
+				
+				box-sizing: border-box;
+				display: flex;
+				flex-wrap:nowrap;
+				justify-content: center;
+				align-items: center;
+			}
+			
+		}
+	
+	}
+</style>

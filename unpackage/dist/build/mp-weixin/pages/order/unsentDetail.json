@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "未送牛奶",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "page-refund": "/components/page-refund/page-refund"
+  }
+}

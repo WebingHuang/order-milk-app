@@ -1,0 +1,109 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+#address {
+  background-color: #F0F0F0;
+  padding-top: 22rpx;
+}
+#address .list .item {
+  margin: 21rpx 20rpx;
+  padding: 0 32rpx;
+  padding-bottom: 20rpx;
+  background-color: #FFFFFF;
+  border-radius: 28rpx;
+  flex-direction: column;
+}
+#address .list .item .top {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+#address .list .item .top > .lfte {
+  color: #1A1A1A;
+  font-size: 28rpx;
+  font-weight: bold;
+  padding-top: 32rpx;
+  padding-bottom: 30rpx;
+}
+#address .list .item .top > .right {
+  color: #1A1A1A;
+  font-size: 28rpx;
+  font-weight: bold;
+  padding-top: 32rpx;
+  padding-bottom: 30rpx;
+}
+#address .list .item .text > .lfte {
+  color: #808080;
+}
+#address .list .item .lower {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 33rpx;
+}
+#address .list .item .lower > .lfte {
+  color: #FA732C;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+}
+#address .list .item .lower > .lfte image {
+  width: 28rpx;
+  height: 28rpx;
+}
+#address .list .item .lower > .lfte text {
+  margin-left: 12rpx;
+}
+#address .list .item .lower > .lfte .activeColor {
+  color: red;
+}
+#address .list .item .lower > .right {
+  font-size: 24rpx;
+  color: #808080;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#address .list .item .lower > .right > .item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 0;
+}
+#address .list .item .lower > .right image {
+  width: 28rpx;
+  height: 28rpx;
+}
+#address .list .item .lower > .right text {
+  margin-left: 12rpx;
+}
+#address .list .item1 {
+  margin-top: 10px;
+}
+#address .button {
+  position: fixed;
+  bottom: 40rpx;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+#address .button .adres {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 400rpx;
+  height: 68rpx;
+  background-color: #3e8bf3;
+  color: #FFFFFF;
+  font-weight: bold;
+  border-radius: 100rpx;
+  letter-spacing: 2px;
+  margin: 0 auto;
+}
+.u-icon__icon {
+  margin: 0 !important;
+}
+

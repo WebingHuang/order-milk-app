@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "投诉反馈",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-input": "/uview-ui/components/u-input/u-input",
+    "u-upload": "/uview-ui/components/u-upload/u-upload"
+  }
+}

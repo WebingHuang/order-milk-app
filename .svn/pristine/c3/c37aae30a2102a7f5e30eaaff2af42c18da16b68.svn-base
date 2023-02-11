@@ -1,0 +1,112 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+#Withdrawal .item {
+  padding: 0 32rpx;
+  padding-bottom: 20rpx;
+  background-color: #FFFFFF;
+  border-radius: 28rpx;
+  padding-bottom: 22rpx;
+  flex-direction: column;
+}
+#Withdrawal .item .top {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+#Withdrawal .item .top image {
+  width: 40rpx;
+  height: 40rpx;
+  top: 34rpx;
+  position: absolute;
+  left: 239rpx;
+}
+#Withdrawal .item .top > .lfte {
+  color: #1A1A1A;
+  font-size: 32rpx;
+  font-weight: bold;
+  padding-top: 32rpx;
+  padding-bottom: 30rpx;
+}
+#Withdrawal .item .top > .right {
+  color: #4D4D4D;
+  font-size: 28rpx;
+  padding-top: 32rpx;
+  padding-bottom: 30rpx;
+  position: absolute;
+  left: 300rpx;
+}
+#Withdrawal .item .text > .lfte {
+  color: #1A1A1A;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+#Withdrawal .item .lower {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 33rpx;
+  width: 100%;
+  width: 100%;
+  border-bottom: solid #F0F0F0 1px;
+}
+#Withdrawal .item .lower > .lfte {
+  color: #1A1A1A;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+}
+#Withdrawal .item .lower > .lfte image {
+  width: 28rpx;
+  height: 28rpx;
+}
+#Withdrawal .item .lower > .lfte text {
+  margin-left: 12rpx;
+}
+#Withdrawal .item .lower > .right > .item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 0;
+}
+#Withdrawal .item .lower > .right image {
+  width: 28rpx;
+  height: 28rpx;
+}
+#Withdrawal .item .lower > .right text {
+  margin-left: 12rpx;
+}
+#Withdrawal .item .balan {
+  margin-top: 40rpx;
+  margin-left: 14.5rpx;
+  font-size: 24rpx;
+}
+#Withdrawal .botomBtn {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 27px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#Withdrawal .botomBtn .confirm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 400rpx;
+  height: 68rpx;
+  position: absolute;
+  left: 20%;
+  bottom: 27px;
+  background: linear-gradient(180deg, #FF9933, #FF6633);
+  color: #FFFFFF;
+  font-weight: bold;
+  border-radius: 100rpx;
+  letter-spacing: 1px;
+  font-size: 32rpx;
+}
+

@@ -1,0 +1,577 @@
+<template>
+	<view id="order" :style="{height:Height}" style="overflow-y:auto">
+		<template>
+			<view class="tabs">
+				<view class="tabsList" v-for="item in list" :key="item.name" @click="change(item)"
+					:class="item.name === current ? 'activeColor' : ''">
+					{{item.name}}
+				</view>
+			</view>
+		</template>
+
+		<template>
+			<view class="wrap">
+				<view class="list" >
+					<view class="item" v-for="(val,index) in ordersList" @click="handlerItem(val)">
+						<view class="top"  v-for="(item,index) in val.omsOrderItemEntityList" :key="index">
+							<view class="lfte">
+								<image lazy-load="true" :src="item.skuPic" mode=""></image>
+							</view>
+							<view class="right">
+								<view class="title">
+									{{item.spuName}}
+								</view>
+								<view class="text">
+									<text class="specs">
+										{{item.skuName}}
+									</text>
+									<text class="num">
+										x{{item.skuQuantity}}
+									</text>
+								</view>
+								<view class="msginfo">
+									<!-- <text class="msg">
+										7天无理由退货
+									</text> -->
+									<text class="money">
+										￥{{item.realAmount  || 0}}
+									</text>
+								</view>
+							</view>
+						</view>
+						<view class="botom">
+							<view class="button" :class="val.orderStatus == '5' || val.orderStatus == '4' ? 'state' : 'activeButton'" v-for="(items,i) in val.buts" :key="i"
+								@tap.stop="handlerButt(items,val)">
+								{{ items }}
+							</view>
+						</view>
+					</view>
+				</view>
+				<u-loadmore :status="status" />
+			</view>
+		</template>
+	</view>
+</template>
+
+<script>
+	import _ from "lodash"
+	const operaState = {
+		'0':['取消订单', '待付款'],
+		'1':['申请退款','查看未送牛奶'],
+		'2':['确认收货'],
+		'3':['去复购'],
+		'4':['退款中'],
+		'5':['已退款'],
+		// '6':['已退款'],
+	}
+	export default {
+		data() {
+			return {
+				fixType: [1, 5], // 未送完、退款订单
+				list: [{
+						name: '全部'
+					},
+					{
+						name: '待付款'
+					},
+					{
+						name: '未送完'
+					},
+					{
+						name: '已送完'
+					},
+					{
+						name:'退款'
+					}
+				],
+				page: {
+					status: 'loadMore',
+					pageNum: 1,
+					pageSize: 10,
+				},
+				current: '全部',
+				Height: "",
+				ordersList: [],
+				orderStatus: '',
+			};
+		},
+		onLoad(option) {
+			let current = uni.getStorageSync('current')
+			let orderStatus = uni.getStorageSync('orderStatus')
+			if(current && orderStatus){
+				uni.removeStorageSync('current')
+				uni.removeStorageSync('orderStatus')
+			}
+			if(option.current || option.orderStatus){
+				this.current = option.current
+				this.orderStatus = option.orderStatus
+			}
+			this.ordersList = [];
+			this.getOrderList();
+			this.getAppHeight();
+		},
+		onHide(){
+			uni.setStorageSync('current',this.current)
+			uni.setStorageSync('orderStatus',this.orderStatus)
+		},
+		onShow(){
+			let current = uni.getStorageSync('current')
+			let orderStatus = uni.getStorageSync('orderStatus')
+			if(current && orderStatus){
+				this.current = current
+				this.orderStatus = orderStatus
+				this.ordersList = [];
+				this.getOrderList();
+			}
+		},
+		methods: {
+			getOrderList() {
+				let omsOrderVo =  Object.assign({
+					"orderStatus": this.orderStatus,
+				}, this.fixType.includes(this.orderStatus)?{
+					type: this.orderStatus == 1? 1 : 2
+				}: {});
+				this.$u.api.findByOrders({
+					'pageRequest': {
+						"pageNum": this.page.pageNum,
+						"pageSize": this.page.pageSize,
+					},
+					omsOrderVo,
+				}).then(res => {
+					// console.log(res);
+					// this.ordersList = res.records
+					res.records.forEach(item => {
+						this.ordersList.push(item)
+						item.buts = this.getbuts(item.orderStatus)
+					})
+
+					if (res.current == res.pages) {
+						this.page.status = 'noneMore';
+					}
+				}).catch()
+			},
+			getbuts(type) {
+				switch (type) {
+					case '0':
+						return operaState[type]
+						break;
+					case '1':
+						return operaState[type]
+						break;
+					case '2':
+						return operaState[type]
+						break;
+					case '3': 
+						return operaState[type]
+						break
+					case '4':
+						return operaState[type]
+						break
+					case '5':
+						return operaState[type]
+						break
+					case '6':
+						return operaState[type]
+						break
+				}
+			},
+			handlerButt:_.debounce(function(item,val) {
+				switch (item) {
+					case '待付款':
+						this.topaid(val)
+						break;
+					case '取消订单':
+						this.cancelOrder(val)
+						break;
+					case '去复购':
+						this.repurchase(val)
+						break;
+					case '查看未送牛奶':
+						this.sendMilk(val)
+						break;
+					case '提醒发货':
+						this.remindDelivery(val)
+						break;
+					case '确认收货':
+						this.confirmReceipt(val)
+						break;
+					case '申请退款':
+						this.tosales(val);
+						break;
+					// case '查看物流':
+					// 	this.checkLogistics(val)
+					// 	break;
+				}
+				
+			 }, 1000, {
+				 'leading': true, //在延迟开始前立即调用事件
+				 'trailing': false, //在延时结束后不调用,保证事件只被触发一次
+			}),
+		
+			tosales(val) {
+				console.log('val', val);
+				let str = [
+					"该订单为月付订单，不可申请退款",
+					"该订单为先送后付订单，不可申请退款",
+					"该订单为可退数量为0，不可申请退款",
+				]
+				let messageKey = -1;
+				if (val.totalCanRefundNum<=0) {
+					messageKey = 2;
+				}
+				if(val.payType == 3) {
+					messageKey = 0;
+				} else if (val.payType ==1) {
+					messageKey = 1;
+				}
+		
+				if (messageKey > -1) {
+					uni.showModal({
+						title: '提示',
+						content: str[messageKey],
+						confirmColor:'black',
+						showCancel: false,
+						confirmText: '确定',
+						success(res2) {
+							if (res2.confirm) {
+								console.log('没有操作');
+							}
+						}
+					});
+					
+				} else {
+					uni.navigateTo({
+						url: '/pages/my/torefund?id='+val.id+'&orderSn='+val.orderSn+'&payAmount='+val.payAmount+'&omsOrderItemEntityList='+encodeURIComponent(JSON.stringify(val.omsOrderItemEntityList))
+					});
+				}
+				
+				// uni.navigateTo({
+				// 	url: '/pages/my/torefund?list=' + encodeURIComponent(JSON.stringify(this.list))
+				// });
+				
+				// uni.navigateTo({
+				// 	url: '/pages/my/postSales?id='+val.id+'&orderSn='+val.orderSn
+				// });
+			},
+			
+			
+			handlerItem(item){
+				if(item.orderStatus == '5' || item.orderStatus == '4' || item.orderStatus == '6'){
+					uni.navigateTo({
+						url: '/pages/order/refundPage?list=' + encodeURIComponent(JSON.stringify(item))
+					})
+				}else{
+					uni.navigateTo({
+						url: '/pages/order/topaid?list=' + encodeURIComponent(JSON.stringify(item))
+					})
+				}
+			},
+			// 待付款
+			topaid(val) {
+				
+				let spuId = [];
+				let skuId = [];
+				let num = [];
+				
+				val.omsOrderItemEntityList.map(item=>{
+					spuId.push(item.spuId)
+					skuId.push(item.skuId)
+					num.push(item.skuQuantity)
+				})
+				
+				uni.navigateTo({
+					url: '/pages/order/confirmOrder?supId='+ spuId.join(',')+ '&skuId=' +skuId.join(',') + '&num='+num.join(',')+'&orderSn='+val.orderSn+'&batchId='+val.batchId
+				})
+			
+			},
+			//取消订单
+			cancelOrder(val) {
+				this.$u.api.updateStatus({
+					orderSn:val.orderSn,
+					orderStatus:'4',
+					deliverySn:''
+				}).then(res=>{
+					uni.showToast({
+						title:'已取消订单'
+					})
+					this.current = '待付款'
+					this.orderStatus = '0'
+					this.ordersList = [];
+					this.getOrderList();
+				}).catch()
+			},
+			//去复购
+			repurchase(val) {
+				uni.navigateTo({
+					url:'/pages/commodity/info?id=' + val.omsOrderItemEntityList[0].spuId
+				})
+			},
+			// 未送牛奶
+			sendMilk(val) {
+				console.log('未送牛奶', val);
+				uni.navigateTo({
+					url:'/pages/order/unsentDetail'
+				})
+			},
+			//提醒发货
+			remindDelivery() {
+				console.log('提醒发货')
+			},
+			//确认收货
+			confirmReceipt(val) {
+				
+				// console.log(val)
+				var spuidList = [];
+				
+				val.omsOrderItemEntityList.map(item=>{
+					spuidList.push(item.spuId)
+				})
+				
+				
+				
+				// return
+				// console.log('确认收货',val)
+				this.$u.api.confirmReceipt({
+					orderSn:val.orderSn,
+					spuId:spuidList
+				}).then(res=>{
+					uni.showToast({
+						title:'确认收货'
+					})
+					this.ordersList = []
+					this.current = '全部'
+					this.orderStatus = ''
+					this.getOrderList();
+				}).catch()
+			},
+			//查看物流
+			checkLogistics() {
+				console.log('查看物流')
+			},
+			change(item) {
+				// console.log(item, this.orderStatus);
+				// this.current = index;
+				switch (item.name) {
+					case '全部':
+						this.current = '全部'
+						break;
+					case '待付款':
+						this.current = '待付款'
+						break;
+					case '未送完':
+						this.current = '未送完'
+						break;
+					case '已送完':
+						this.current = '已送完'
+						break
+					case '退款':
+							this.current = '退款'
+						break
+				}
+				// console.log(this.current);
+				let orderStatus;
+				if (this.current === '待付款') {
+					orderStatus = 0
+				} else if (this.current === '未送完') {
+					orderStatus = 1
+				} else if (this.current === '已送完') {
+					orderStatus = 3
+				} else if (this.current === '退款') {
+					orderStatus = 5
+				} else {
+					orderStatus = ''
+				}
+				this.orderStatus = orderStatus;
+				this.ordersList = [];
+				this.getOrderList();
+			},
+			handlerClick(item) {
+				// console.log(item);
+				switch (item.type) {
+					case '全部':
+						this.current = '全部'
+						break;
+					case '待付款':
+						this.current = '待付款'
+						break;
+					case '未送完':
+						this.current = '未送完'
+						break;
+					case '已送完':
+						this.current = '已送完'
+						break
+				}
+			},
+			onReachBottom() { //上拉加载
+				if (this.page.status === 'loadMore') {
+					this.page.pageNum++;
+					this.getOrderList();
+				}
+			},
+			getAppHeight() {
+				this.Height = uni.getSystemInfoSync().windowHeight + 'px';
+			},
+		}
+
+	}
+</script>
+
+<style lang="scss">
+	#order {
+		background: #f0f0f0;
+
+		.tabs {
+			width: 750rpx;
+			height: 88rpx;
+			overflow-x: auto;
+			background: #FFFFFF;			
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			position: fixed;
+			z-index: 100;
+
+			.tabsList {
+				color: #000000;
+			}
+		}
+
+		.activeColor {
+			color: $u-main-color;
+			border-bottom: 1rpx solid $u-main-color;
+		}
+		.wrap {
+			padding-top: 100rpx;
+
+			.list {
+				padding-top: 20rpx;
+				margin: 0 21rpx;
+
+				&>.item {
+					padding: 0 20rpx;
+					margin-bottom: 20rpx;
+					background: #FFFFFF;
+					border-radius: 12rpx;
+					width: 100%;
+
+					&>.top {
+						padding-top: 20rpx;
+						display: flex;
+						justify-content: space-between;
+						padding-bottom: 20rpx;
+
+						.lfte {
+							height: 180rpx;
+
+							image {
+								width: 180rpx;
+								height: 180rpx;
+								border-radius: 12rpx;
+							}
+						}
+
+						.right {
+							width: 469rpx;
+							display: flex;
+							flex-direction: column;
+							justify-content: space-between;
+
+							.title {
+								font-size: 28rpx;
+								font-weight: bold;
+								color: #1A1A1A;
+							}
+
+							.text {
+								display: flex;
+								justify-content: space-between;
+
+								.specs {
+									font-size: 24rpx;
+									color: #808080;
+								}
+
+								.num {
+									font-size: 28rpx;
+									color: #1A1A1A;
+								}
+							}
+
+							.msginfo {
+								display: flex;
+								justify-content: space-between;
+
+								.msg {
+									color: $u-main-color;
+									font-size: 20rpx;
+									background: #FFF0E5;
+									display: flex;
+									justify-content: center;
+									align-items: center;
+									border-radius: 12rpx;
+									width: 160rpx;
+									height: 32rpx;
+								}
+
+								.money {
+									color: $u-main-color;
+									font-size: 32rpx;
+									font-weight: bold;
+								}
+							}
+						}
+
+					}
+
+					&>.botom {
+						display: flex;
+						flex-direction: row-reverse;
+						align-items: center;
+
+						.but {
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							background: $u-main-color;
+							color: #FFFFFF;
+							font-size: 24rpx;
+							width: 128rpx;
+							height: 48rpx;
+							border-radius: 12rpx;
+							margin-left: 10px;
+
+						}
+
+						.button {
+							min-width: 128rpx;
+							width: max-content;
+							height: 48rpx;
+							text-align: center;
+							line-height: 48rpx;
+							color: #4D4D4D;
+							border: 2rpx solid #4D4D4D;
+							border-radius: 8rpx;
+							margin-top: 20rpx;
+							margin-bottom: 20rpx;
+						    margin-left: 40rpx;
+							// padding: 12rpx 17rpx 12rpx 16rpx;
+						}
+						// .button:last-child {
+						// 	margin-left: 40rpx;
+						// }
+
+						.activeButton {
+							background: $u-main-color;
+							color: #FFFFFF;
+							border: none;
+						}
+						.state{
+							border: none;
+							color: $u-main-color;
+						}
+					}
+				}
+			}
+		}
+	}
+</style>

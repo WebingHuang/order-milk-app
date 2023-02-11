@@ -1,0 +1,102 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+.u-form-item {
+  color: #000000 !important;
+}
+.u-input__input {
+  color: #000000 !important;
+}
+.u-column-item {
+  color: #000000 !important;
+}
+.u-input__right-icon {
+  padding-right: 60rpx;
+}
+#editaddress {
+  background-color: #F0F0F0;
+}
+#editaddress .info {
+  padding: 0 34rpx;
+  background: #FFFFFF;
+}
+#editaddress .info .button {
+  font-size: 28rpx;
+  color: #C0C4CC;
+}
+#editaddress .pass {
+  background-color: #FFFFFF;
+  width: 750rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  margin-top: 12rpx;
+}
+#editaddress .pass .default {
+  margin-left: 34rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  color: #000000;
+}
+#editaddress .pass .default .checked {
+  margin-right: 32rpx;
+}
+#editaddress .overs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 400rpx;
+  height: 68rpx;
+  position: absolute;
+  left: 20%;
+  bottom: 27px;
+  background-color: #3e8bf3;
+  color: #FFFFFF;
+  font-weight: bold;
+  border-radius: 100rpx;
+  letter-spacing: 2px;
+}
+#selectSchool, #selectClass {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-color: white;
+  overflow: none;
+  z-index: 100;
+}
+#selectSchool .select-box, #selectClass .select-box {
+  position: relative;
+}
+#selectSchool .select-box .search-box, #selectClass .select-box .search-box {
+  position: fixed;
+  top: 0;
+  left: 1em;
+  right: 1em;
+  z-index: 199;
+}
+#selectSchool .select-box .list-box, #selectClass .select-box .list-box {
+  z-index: 180;
+  overflow: auto;
+  margin: 84rpx 1em 0 1em;
+  padding: 0 6rpx;
+  height: calc(100vh - 84rpx);
+}
+#selectSchool .select-box .list-box .row, #selectClass .select-box .list-box .row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10rpx 20rpx;
+  border-bottom: #C0C4CC 1px solid;
+}
+#selectSchool .select-box .list-box .row .title, #selectClass .select-box .list-box .row .title {
+  font-size: 12px;
+  height: 50rpx;
+  line-height: 50rpx;
+}
+

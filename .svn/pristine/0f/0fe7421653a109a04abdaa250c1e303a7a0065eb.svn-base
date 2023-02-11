@@ -1,0 +1,97 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+#postSales {
+  background-color: #F0F0F0;
+  padding-top: 22rpx;
+}
+#postSales .list {
+  margin: 0 21rpx;
+}
+#postSales .list .listItem {
+  background: #FFFFFF;
+  margin-bottom: 20rpx;
+}
+#postSales .list .listItem .item {
+  display: flex;
+  flex-direction: column;
+}
+#postSales .list .listItem .item .itemTop {
+  display: flex;
+}
+#postSales .list .listItem .item .itemTop .left {
+  padding: 20rpx;
+}
+#postSales .list .listItem .item .itemTop .left image {
+  width: 180rpx;
+  height: 180rpx;
+}
+#postSales .list .listItem .item .itemTop .right {
+  flex: 1;
+}
+#postSales .list .listItem .item .itemTop .right .title {
+  font-size: 28rpx;
+  font-family: Source Han Sans CN;
+  font-weight: bold;
+  color: #1A1A1A;
+  display: flex;
+  align-items: center;
+  padding: 18rpx 18rpx 0 0;
+}
+#postSales .list .listItem .item .itemTop .right .info {
+  display: flex;
+  justify-content: space-between;
+  padding: 17rpx 19rpx 0 0;
+}
+#postSales .list .listItem .item .itemTop .right .info .skuName {
+  font-size: 24rpx;
+  font-family: Source Han Sans CN;
+  font-weight: bold;
+  color: #808080;
+}
+#postSales .list .listItem .item .itemTop .right .info .num {
+  font-size: 28rpx;
+  font-family: Source Han Sans CN;
+  font-weight: bold;
+  color: #1A1A1A;
+}
+#postSales .list .listItem .item .itemTop .right .note {
+  display: flex;
+  justify-content: space-between;
+  padding: 47rpx 20rpx 0 0;
+}
+#postSales .list .listItem .item .itemTop .right .note .text {
+  background: #FFF0E5;
+  border-radius: 4rpx;
+  padding: 7rpx 15rpx 6rpx 15rpx;
+  font-size: 20rpx;
+  font-family: Source Han Sans CN;
+  font-weight: bold;
+  color: #3e8bf3;
+}
+#postSales .list .listItem .item .itemTop .right .note .price {
+  font-size: 32rpx;
+  font-family: Source Han Sans CN;
+  font-weight: bold;
+  color: #3e8bf3;
+}
+#postSales .list .listItem .item .itemBottom {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20rpx 20rpx 20rpx 0;
+}
+#postSales .list .listItem .item .itemBottom .button {
+  margin: 0;
+  background: linear-gradient(180deg, #FF9933, #FF6633);
+  border-radius: 8rpx;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  font-family: Source Han Sans CN;
+  font-weight: bold;
+}
+

@@ -1,0 +1,85 @@
+@charset "UTF-8";
+/**
+ * 下方引入的为uView UI的集成样式文件，为scss预处理器，其中包含了一些"u-"开头的自定义变量
+ * 使用的时候，请将下面的一行复制到您的uniapp项目根目录的uni.scss中即可
+ * uView自定义的css类名和scss变量，均以"u-"开头，不会造成冲突，请放心使用 
+ */
+#capial {
+  background: url(http://120.78.163.4:8082/capital/bj.png) no-repeat;
+  background-size: cover;
+  width: 100%;
+}
+#capial .top {
+  background-color: #FFFFFF;
+  opacity: 0.5;
+  margin: 0 21rpx;
+  height: 280rpx;
+  border-radius: 12rpx;
+}
+#capial .top .money {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 31rpx;
+}
+#capial .top .money .title {
+  font-size: 32rpx;
+  color: #4D2D17;
+}
+#capial .top .money .text {
+  color: #4D2D17;
+  font-size: 32rpx;
+  font-weight: bold;
+  padding-top: 39rpx;
+}
+#capial .top .item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 40rpx;
+}
+#capial .top .item .lfte {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 24rpx;
+  color: #4D2D17;
+}
+#capial .top .item .hr {
+  border-right: 1px #4D2D17 solid;
+}
+#capial .top .item .right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 24rpx;
+  color: #4D2D17;
+}
+#capial .list {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 21rpx;
+  padding-top: 20rpx;
+}
+#capial .list .item {
+  width: 220rpx;
+  height: 220rpx;
+  border-radius: 12rpx;
+  background-color: #FFFFFF;
+  opacity: 0.5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#capial .list .item image {
+  width: 60rpx;
+  height: 60rpx;
+}
+#capial .list .item text {
+  font-size: 32rpx;
+}
+

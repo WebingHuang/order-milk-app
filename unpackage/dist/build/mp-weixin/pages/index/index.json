@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "学生订牛奶",
+  "navigationBarTextStyle": "white",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "phone-modal": "/components/phone-modal/phone-modal",
+    "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
+    "u-search": "/uview-ui/components/u-search/u-search",
+    "u-swiper": "/uview-ui/components/u-swiper/u-swiper",
+    "u-loadmore": "/uview-ui/components/u-loadmore/u-loadmore",
+    "tarbar": "/components/tarbar/tarbar",
+    "u-mask": "/uview-ui/components/u-mask/u-mask"
+  }
+}

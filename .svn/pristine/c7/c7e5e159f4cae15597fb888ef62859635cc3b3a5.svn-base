@@ -1,0 +1,249 @@
+<template>
+    <view id="login">
+       
+        <view v-if="isCanUse">
+            <view>
+                <view class='header'>
+                    <image src='http://120.78.163.4:8082/login/logo.png'></image>
+                </view>
+                <view class='content'>
+                    <view>申请获取以下权限</view>
+                    <text>获得你的公开信息(昵称，头像、地区等)</text>
+                </view>
+
+                <button class='bottom'   lang="zh_CN" @click="wxGetUserInfo" v-if="isLogin">
+                    获取用户基本信息
+                </button>
+				
+				
+				<button class='bottom'  open-type="getPhoneNumber" withCredentials="true" lang="zh_CN" @getphonenumber="PhoneNumber" v-else>
+				    手机号一键登录
+				</button>
+            </view>
+        </view>
+       
+    </view>
+</template>
+
+<script>
+	import WXBizDataCrypt from "../../common/WXBizDataCrypt.js";
+
+
+
+	export default {
+		data() {
+			return {
+				
+				code:"",
+				openid:"",
+				iv:"",
+				encryptedData:"",
+				appId:"",
+				sessionkey:"",
+				userInfo:{
+					iv:"",
+					encryptedData:"",
+				},
+				phone:"",
+				
+				isLogin:true,
+				
+				nickName: "",
+				avatarUrl: "",
+				isCanUse: uni.getStorageSync('isCanUse')||true//默认为true
+			}
+		},
+		onLoad() {
+			this.login();
+		},
+		methods: {
+			
+			wxLogin(){
+				let _this = this;
+				
+				_this.$u.api.wxLogin({
+					openId: _this.openid,
+					userHeader: _this.avatarUrl,
+					userName: _this.nickName,
+					userPhone: _this.phone
+				})
+				.then(res => {
+					
+					uni.setStorageSync('token', res);
+					
+					uni.navigateBack();
+					// 孩子所定牛奶余下X支，请续订
+					this.$u.api.whetherRenewalNotice().then(res => {
+						if (res.code === 200 && res.data?.flag) {
+							uni.showModal({
+								title: '提示',
+								content: res.data.note,
+								// cancelColor:'#eeeeee',
+								confirmColor:'#ff9159',
+								showCancel: false,
+								success(res2) {
+									if (res2.confirm) {
+										
+										uni.navigateTo({
+											url: '/pages/commodity/index'
+										});
+									}
+								}
+							});
+						}
+					})
+					// uni.reLaunch({
+					//     url: '/pages/index/index'
+					// });
+				})
+				.catch((err) => {
+					
+					this.$u.toast(err.data.message);
+				
+				});		
+				
+			},
+			
+			//获取手机号
+			PhoneNumber(e){
+				
+				let _this = this;
+				
+				// console.log(e)
+				if(e.detail.errMsg == 'getPhoneNumber:ok'){
+					_this.encryptedData = e.detail.encryptedData;
+					_this.iv = e.detail.iv;
+					
+					let pc = new WXBizDataCrypt(_this.appId, _this.sessionkey)
+					
+					// console.log(e.detail.encryptedData)
+					// console.log(e.detail.iv)
+					let data = pc.decryptData(_this.encryptedData , e.detail.iv)
+					
+					// console.log('解密后 data: ', data)	
+						uni.setStorageSync('phoneNumber',data.phoneNumber)
+					 _this.phone = data.purePhoneNumber;
+					 _this.wxLogin();
+					 
+				}else{
+					//拒绝获取手机号
+					
+				}
+						
+								
+				
+			},
+			//第一授权获取用户信息===》按钮触发
+            wxGetUserInfo() {
+                let _this = this;
+				uni.showLoading({
+					title:"拉取授权中",
+				});
+				
+				
+                uni.getUserProfile({
+                    desc:'授权登录',
+					lang:'zh_CN',
+                    success: function(infoRes) {
+						console.log(infoRes)
+                        _this.nickName = infoRes.userInfo.nickName; //昵称
+                        _this.avatarUrl = infoRes.userInfo.avatarUrl; //头像
+						// uni.setStorageSync('nickName',infoRes.userInfo.nickName);
+						// uni.setStorageSync('avatarUrl',infoRes.userInfo.avatarUrl);
+                        try {
+							
+							_this.isLogin = false;
+                            uni.setStorageSync('isCanUse', false);//记录是否第一次授权  false:表示不是第一次授权
+							uni.hideLoading();
+							
+                           
+                        } catch (e) {
+							
+						}
+                    },
+                    fail(res) {
+						
+					}
+                });
+            },
+			
+		
+			
+			
+			login() {
+                let _this = this;
+              
+             
+               // 1.wx获取登录用户code
+                uni.login({
+                    provider: 'weixin',
+                    success: function(loginRes) {
+						
+						_this.code = loginRes.code;
+				
+						//2.将用户登录code传递到后台置换用户SessionKey、OpenId等信息
+							
+						_this.$u.api.wxgetUserInfo({
+							code: _this.code
+						})
+						.then(res => {
+							_this.openid = res.openId;
+							_this.appId = res.appId;
+							_this.sessionkey = res.sessionKey;
+							uni.setStorageSync('openid', _this.openid);
+						})
+						.catch((err) => {
+							console.log(err)
+						});		
+                       
+				},
+            });
+        },
+		
+
+		}
+	}
+
+</script>
+
+<style lang="scss" scoped>
+	
+	#login{
+		button{
+			background: $u-main-color;
+			color: #FFFFFF;
+		}
+	}
+	
+	 .header {
+	        margin: 90rpx 0 90rpx 50rpx;
+	        border-bottom: 1px solid #ccc;
+	        text-align: center;
+	        width: 650rpx;
+	        height: 300rpx;
+	        line-height: 450rpx;
+	    }
+	
+	    .header image {
+	        width: 200rpx;
+	        height: 200rpx;
+	    }
+	
+	    .content {
+	        margin-left: 50rpx;
+	        margin-bottom: 90rpx;
+	    }
+	
+	    .content text {
+	        display: block;
+	        color: #9d9d9d;
+	        margin-top: 40rpx;
+	    }
+	
+	    .bottom {
+	        border-radius: 80rpx;
+	        margin: 70rpx 50rpx;
+	        font-size: 35rpx;
+	    }
+</style>
+

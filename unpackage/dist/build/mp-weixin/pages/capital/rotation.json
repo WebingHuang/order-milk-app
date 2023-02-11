@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "余额互转",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-input": "/uview-ui/components/u-input/u-input"
+  }
+}

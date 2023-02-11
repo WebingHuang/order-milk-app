@@ -1,0 +1,1 @@
+<view class="refundDetail data-v-2574ec72" style="{{'overflow-y:auto;'+('height:'+(Height)+';')}}"><block wx:if="{{titles}}"><view class="data-v-2574ec72"><u-navbar vue-id="edadba58-1" title="{{titles}}" background="{{none}}" height="44" border-bottom="{{false}}" title-color="#FFFFFF" class="data-v-2574ec72" bind:__l="__l"></u-navbar></view></block><slot></slot></view>
